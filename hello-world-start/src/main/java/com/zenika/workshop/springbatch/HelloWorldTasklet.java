@@ -18,9 +18,9 @@ public class HelloWorldTasklet implements Tasklet {
 	public RepeatStatus execute(StepContribution contribution,
 			ChunkContext chunkContext) throws Exception {
 		// TODO 01 print "Hello World!" on the console
-		System.out.println("Hello world!");
+		
 		// TODO 02 return RepeatStatus.FINISHED
-		// Spring Batch won't repeat the execute method
+		// Spring Batch will execute the method once then
 		return null;
 	}
 	

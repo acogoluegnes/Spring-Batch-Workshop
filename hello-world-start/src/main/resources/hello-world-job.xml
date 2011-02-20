@@ -7,7 +7,7 @@
 
 	<!-- TODO 03 configure an helloWorldJob with the HelloWorldTasklet -->
 	<!-- the job will contains only one step that refers to the tasklet -->
-	<!-- use the batch namespace! -->
+	<!-- use the batch namespace and Ctrl + T for code completion (tag + class)! -->
 	
 
 
