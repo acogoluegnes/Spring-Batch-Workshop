@@ -1,1 +1,4 @@
 A Spring Batch workshop.
+
+Samples:
+  - hello world: writing "Hello World" on the console
