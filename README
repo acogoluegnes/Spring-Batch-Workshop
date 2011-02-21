@@ -2,3 +2,4 @@ A Spring Batch workshop.
 
 Samples:
   - hello world: writing "Hello World" on the console
+  - flat file reading: reading from a flat file (and writing to a database)

@@ -189,5 +189,7 @@
 	<modules>
 		<module>hello-world-start</module>
 		<module>hello-world-solution</module>
+		<module>flat-file-reading-start</module>
+		<module>flat-file-reading-solution</module>
 	</modules>
 </project>
