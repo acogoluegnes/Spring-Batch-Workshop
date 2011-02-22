@@ -33,6 +33,8 @@ public class HelloWorldJobTest {
 		
 		// TODO 06 check the returned JobExecution
 		// it should have an ExitStatus.COMPLETED exit status
+		
+		// TODO 07 run the test!
 	}
 	
 }
