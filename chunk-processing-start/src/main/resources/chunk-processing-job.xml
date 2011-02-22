@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+	<!-- TODO 06 configure the job with the chunk-oriented step -->
+	
+	<!-- TODO 05 declare Spring beans for the item reader/processor/writer -->
+	<bean id="reader" class="com.zenika.workshop.springbatch.StringItemReader" />
+	<bean id="processor" class="com.zenika.workshop.springbatch.StringItemProcessor" />
+	<bean id="writer" class="com.zenika.workshop.springbatch.StringItemWriter" />
+
+	<!-- Spring Batch infrastructure -->
+	<bean id="transactionManager" class="org.springframework.batch.support.transaction.ResourcelessTransactionManager" />
+
+	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean" />
+
+	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+
+</beans>
