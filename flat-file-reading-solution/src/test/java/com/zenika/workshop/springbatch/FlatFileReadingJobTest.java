@@ -39,7 +39,7 @@ public class FlatFileReadingJobTest {
 		jdbcTemplate.update("delete from contact");
 	}
 	
-	@Test public void helloWorld() throws Exception {
+	@Test public void flatFileReading() throws Exception {
 		JobExecution execution = jobLauncher.run(job, new JobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
 		assertEquals(5,jdbcTemplate.queryForInt("select count(1) from contact"));

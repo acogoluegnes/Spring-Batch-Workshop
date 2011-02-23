@@ -42,7 +42,7 @@ public class FlatFileReadingJobTest {
 		jdbcTemplate.update("delete from contact");
 	}
 	
-	@Test public void helloWorld() throws Exception {
+	@Test public void flatFileReading() throws Exception {
 		// TODO 05 run the job with the job launcher. Use empty job parameters
 		
 		// TODO 06 check the returned JobExecution

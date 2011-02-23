@@ -28,7 +28,7 @@ public class ChunkProcessingJobTest {
 	@Autowired
 	private JobLauncher jobLauncher;
 	
-	@Test public void helloWorld() throws Exception {
+	@Test public void chunkProcessing() throws Exception {
 		// TODO 08 run the job with the job launcher. Use empty job parameters
 		
 		// TODO 09 check the returned JobExecution

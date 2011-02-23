@@ -30,7 +30,7 @@ public class ChunkProcessingJobTest {
 	@Autowired
 	private JobLauncher jobLauncher;
 	
-	@Test public void helloWorld() throws Exception {
+	@Test public void chunkProcessing() throws Exception {
 		JobExecution execution = jobLauncher.run(job, new JobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
 	}
