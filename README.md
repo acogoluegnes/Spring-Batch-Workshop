@@ -15,6 +15,7 @@ To get the code, two solutions:
 
 * if you have git installed, just type the following command: 
 	$ git clone git://github.com/acogoluegnes/Spring-Batch-Workshop.git
+
 * if you don't have git installed or don't want to use it, there's a "Downloads" link on the github webpage 
 to download an archive.
 
