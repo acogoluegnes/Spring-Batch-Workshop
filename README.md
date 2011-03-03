@@ -6,6 +6,8 @@
 * chunk processing: simple illustration of the chunk processing
 * flat file reading: reading from a flat file (and writing to a database)
 * skip: skipping a badly formatted line in a CSV file instead of crashing
+* dynamic job parameters: passing parameters to job artefacts (e.g. input file to an item reader)
+* execution metadata: seeing how Spring Batch stores execution metadata to enable restart and ease monitoring
 
 ## Installation instructions
 

@@ -201,6 +201,8 @@
 		<module>flat-file-reading-solution</module>
 		<module>skip-start</module>
 		<module>skip-solution</module>
+		<module>dynamic-job-parameters-start</module>
+		<module>dynamic-job-parameters-solution</module>
 		<module>execution-metadata-start</module>
 		<module>execution-metadata-solution</module>
 	</modules>
