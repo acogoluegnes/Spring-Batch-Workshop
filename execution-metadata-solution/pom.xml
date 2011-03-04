@@ -10,7 +10,8 @@
 	<properties>
 		<spring.batch.admin.version>1.2.0.RELEASE</spring.batch.admin.version>
 		<jetty.version>6.1.26</jetty.version>
-		<logback.version>0.9.20</logback.version>
+		<slf4j.version>1.6.1</slf4j.version>
+		<logback.version>0.9.27</logback.version>
 		<h2.version>1.3.148</h2.version>
 		<junit.version>4.8.2</junit.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -27,8 +28,30 @@
 			<groupId>org.springframework.batch</groupId>
 			<artifactId>spring-batch-admin-manager</artifactId>
 			<version>${spring.batch.admin.version}</version>
+			<exclusions>
+				<exclusion>
+          			<groupId>org.slf4j</groupId>
+          			<artifactId>slf4j-api</artifactId>
+        		</exclusion>
+        		<exclusion>
+          			<groupId>org.slf4j</groupId>
+          			<artifactId>jcl-over-slf4j</artifactId>
+        		</exclusion>
+			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${slf4j.version}</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
