@@ -9,6 +9,13 @@
 * dynamic job parameters: passing parameters to job artefacts (e.g. input file to an item reader)
 * execution metadata: seeing how Spring Batch stores execution metadata to enable restart and ease monitoring
 
+TBD:
+
+* JDBC paging: reading large result sets from a database using paging
+* triggering a job execution with an external event (using Spring Integration)
+* scheduling with Spring Scheduler
+* scaling with local partitioning
+
 ## Installation instructions
 
 To get the code, two solutions:
