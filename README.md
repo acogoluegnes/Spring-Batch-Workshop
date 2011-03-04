@@ -7,11 +7,12 @@
 * flat file reading: reading from a flat file (and writing to a database)
 * skip: skipping a badly formatted line in a CSV file instead of crashing
 * dynamic job parameters: passing parameters to job artefacts (e.g. input file to an item reader)
+* JDBC paging: reading large result sets from a database using paging
 * execution metadata: seeing how Spring Batch stores execution metadata to enable restart and ease monitoring
 
 TBD:
 
-* JDBC paging: reading large result sets from a database using paging
+* embedding business logic in an ItemProcessor
 * triggering a job execution with an external event (using Spring Integration)
 * scheduling with Spring Scheduler
 * scaling with local partitioning

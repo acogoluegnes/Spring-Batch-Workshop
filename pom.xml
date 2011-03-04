@@ -203,6 +203,8 @@
 		<module>skip-solution</module>
 		<module>dynamic-job-parameters-start</module>
 		<module>dynamic-job-parameters-solution</module>
+		<module>jdbc-paging-start</module>
+		<module>jdbc-paging-solution</module>
 		<module>execution-metadata-start</module>
 		<module>execution-metadata-solution</module>
 	</modules>
