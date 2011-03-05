@@ -31,6 +31,7 @@
 				</property>
 			</bean>
 		</property>
+		<property name="shouldDeleteIfExists" value="true" />
 	</bean>
 
 	<jdbc:embedded-database type="H2" id="dataSource">

@@ -9,7 +9,6 @@ import static org.junit.Assert.assertTrue;
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.batch.core.ExitStatus;
@@ -41,31 +40,18 @@ public class JdbcPagingJobTest {
 	
 	private String outputFile = "./target/contacts.txt";
 	
-	@Before public void setUp() {
-		File file = new File(outputFile);
-		if(file.exists()) {
-			file.delete();
-		}
-	}
-	
 	@Test public void jdbcPaging() throws Exception {
-		File file = checkPreConditions();
 		JobExecution execution = jobLauncher.run(job, new JobParametersBuilder()
 			.addString("output.file", "file:"+outputFile)
 			.toJobParameters()
 		);
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
+		File file = new File(outputFile);
 		assertTrue(file.exists());
 		assertEquals(
 			jdbcTemplate.queryForInt("select count(1) from contact"), 
 			FileUtils.readLines(file).size()
 		);
-	}
-
-	private File checkPreConditions() {
-		File file = new File(outputFile);
-		assertTrue("the output file shouldn't exist before the job execution",!file.exists());
-		return file;
 	}
 	
 }

@@ -52,24 +52,18 @@ public class JdbcPagingJobTest {
 	}
 	
 	@Test public void jdbcPaging() throws Exception {
-		File file = checkPreConditions();
 		JobExecution execution = jobLauncher.run(job, new JobParametersBuilder()
 			.addString("output.file", "file:"+outputFile)
 			.toJobParameters()
 		);
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
+		File file = new File(outputFile);
 		assertTrue(file.exists());
 		assertEquals(
 			jdbcTemplate.queryForInt("select count(1) from contact"), 
 			FileUtils.readLines(file).size()
 		);
 		// TODO 04 launch the test!
-	}
-
-	private File checkPreConditions() {
-		File file = new File(outputFile);
-		assertTrue("the output file shouldn't exist before the job execution",!file.exists());
-		return file;
 	}
 	
 }
