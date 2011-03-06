@@ -209,5 +209,7 @@
 		<module>execution-metadata-solution</module>
 		<module>scheduling-start</module>
 		<module>scheduling-solution</module>
+		<module>item-processor-start</module>
+		<module>item-processor-solution</module>
 	</modules>
 </project>

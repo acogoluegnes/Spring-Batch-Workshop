@@ -10,12 +10,14 @@
 * JDBC paging: reading large result sets from a database using paging
 * execution metadata: seeing how Spring Batch stores execution metadata to enable restart and ease monitoring
 * scheduling: using Spring scheduling support to execute a job periodically 
+* item processor: embedding business logic in an ItemProcessor
 
 TBD:
 
-* embedding business logic in an ItemProcessor
+* logging skipped items
 * triggering a job execution with an external event (using Spring Integration)
 * scaling with local partitioning
+* adding a "going further" section when it makes
 
 ## Installation instructions
 
