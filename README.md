@@ -9,12 +9,12 @@
 * dynamic job parameters: passing parameters to job artefacts (e.g. input file to an item reader)
 * JDBC paging: reading large result sets from a database using paging
 * execution metadata: seeing how Spring Batch stores execution metadata to enable restart and ease monitoring
+* scheduling with Spring Scheduler
 
 TBD:
 
 * embedding business logic in an ItemProcessor
 * triggering a job execution with an external event (using Spring Integration)
-* scheduling with Spring Scheduler
 * scaling with local partitioning
 
 ## Installation instructions
