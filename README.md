@@ -17,7 +17,6 @@ TBD:
 * logging skipped items
 * triggering a job execution with an external event (using Spring Integration)
 * scaling with local partitioning
-* adding a "going further" section when it makes
 
 ## Installation instructions
 
