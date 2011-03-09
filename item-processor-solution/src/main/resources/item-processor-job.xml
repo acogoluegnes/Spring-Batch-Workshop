@@ -33,8 +33,13 @@
 	
 	<bean id="registrationService" class="com.zenika.workshop.springbatch.RegistrationService" />
 	
-	<bean id="processor" class="com.zenika.workshop.springbatch.ContactItemProcessor">
-		<property name="registrationService" ref="registrationService" />
+<!-- 	<bean id="processor" class="com.zenika.workshop.springbatch.ContactItemProcessor"> -->
+<!-- 		<property name="registrationService" ref="registrationService" /> -->
+<!-- 	</bean> -->
+	
+	<bean id="processor" class="org.springframework.batch.item.adapter.ItemProcessorAdapter">
+		<property name="targetObject" ref="registrationService" />
+		<property name="targetMethod" value="process" />
 	</bean>
 	
 	<bean id="writer" class="com.zenika.workshop.springbatch.JdbcRegistrationConfirmationItemWriter">
