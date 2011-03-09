@@ -211,5 +211,7 @@
 		<module>scheduling-solution</module>
 		<module>item-processor-start</module>
 		<module>item-processor-solution</module>
+		<module>logging-skipped-items-start</module>
+		<module>logging-skipped-items-solution</module>
 	</modules>
 </project>
