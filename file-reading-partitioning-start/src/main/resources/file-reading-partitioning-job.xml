@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+	<!-- TODO xx take a look at the non-partitioned job and its reader/writer -->
+	<!-- it uses a reader that read items from multiple files (one file after the other) -->
+	<batch:job id="fileReadingJob">
+		<batch:step id="readWriteContactsStep">
+			<batch:tasklet>
+				<batch:transaction-attributes isolation="READ_UNCOMMITTED"/>
+				<batch:chunk reader="multiResourceItemReader" writer="writer" commit-interval="10"/>
+			</batch:tasklet>	
+		</batch:step>
+	</batch:job>
+
+	<batch:job id="fileReadingPartitioningJob">
+		<batch:step id="partitionedStep" >
+			<!-- TODO xx remove the content of this <step /> tag -->
+			<!-- TODO xx configure the partition step -->
+			<!-- it uses the standalone step defined just below -->
+			<!-- don't forget to wire the partitioner and the taskExecutor -->
+		</batch:step>
+	</batch:job>
+	
+	<batch:step id="readWriteContactsPartitionedStep">
+		<batch:tasklet>
+			<batch:transaction-attributes isolation="READ_UNCOMMITTED"/>
+			<batch:chunk reader="reader" writer="writer" commit-interval="10" />
+		</batch:tasklet>	
+	</batch:step>
+	
+	<!-- TODO xx define a MultiResourcePartitioner, the files are inside the ./src/main/resources/input/ directory -->
+	<bean id="partitioner" class="org.springframework.batch.core.partition.support.MultiResourcePartitioner">
+		<property name="resources" value="file:./src/main/resources/input/*.txt" />
+	</bean>
+	
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="5" />
+	</bean>
+	
+	<bean id="reader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer">
+					<bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="names" value="firstname,lastname,birth" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+				</property>
+			</bean>
+		</property>
+		<property name="resource" value="#{stepExecutionContext['fileName']}" />
+	</bean>
+	
+	<bean id="multiResourceItemReader" class="org.springframework.batch.item.file.MultiResourceItemReader">
+		<property name="resources" value="file:./src/main/resources/input/*.txt" />
+		<property name="delegate">
+			<bean class="org.springframework.batch.item.file.FlatFileItemReader">
+				<property name="lineMapper">
+					<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+						<property name="lineTokenizer">
+							<bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+								<property name="names" value="firstname,lastname,birth" />
+							</bean>
+						</property>
+						<property name="fieldSetMapper">
+							<bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+						</property>
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="writer" class="com.zenika.workshop.springbatch.JdbcContactItemWriter">
+		<constructor-arg ref="dataSource" />
+	</bean>
+	
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="org.h2.Driver" />
+		<property name="url" value="jdbc:h2:tcp://localhost/mem:file-reading-partitioning" />
+		<property name="username" value="sa" />
+		<property name="password" value="" />
+		<property name="initialSize" value="5" />
+	</bean>
+
+	<jdbc:initialize-database data-source="dataSource">
+		<jdbc:script location="classpath:/create-tables.sql" />
+	</jdbc:initialize-database>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean" />
+
+	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+	
+	<bean class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+</beans>

@@ -213,5 +213,7 @@
 		<module>item-processor-solution</module>
 		<module>logging-skipped-items-start</module>
 		<module>logging-skipped-items-solution</module>
+		<module>file-reading-partitioning-start</module>
+		<module>file-reading-partitioning-solution</module>
 	</modules>
 </project>
