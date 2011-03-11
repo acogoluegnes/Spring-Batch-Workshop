@@ -10,4 +10,14 @@
 	</parent>
 	<artifactId>scheduling-solution</artifactId>
 
+	<dependencies>
+	
+		<dependency>
+		    <groupId>com.jayway.awaitility</groupId>
+		    <artifactId>awaitility</artifactId>
+		    <version>1.3.1</version>
+		</dependency>
+	
+	</dependencies>
+
 </project>

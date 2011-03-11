@@ -12,11 +12,11 @@
 * scheduling: using Spring scheduling support to execute a job periodically 
 * item processor: embedding business logic in an ItemProcessor
 * logging skipped items: using a skip listener to log skipped items
+* file reading partitioning: multithreading reading and processing of files
 
 TBD:
 
 * triggering a job execution with an external event (using Spring Integration)
-* scaling with local partitioning
 
 ## Installation instructions
 

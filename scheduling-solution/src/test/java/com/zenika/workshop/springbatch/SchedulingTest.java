@@ -3,7 +3,9 @@
  */
 package com.zenika.workshop.springbatch;
 
-import static org.junit.Assert.assertTrue;
+import static com.jayway.awaitility.Awaitility.await;
+import static com.jayway.awaitility.Awaitility.to;
+import static org.hamcrest.Matchers.equalTo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,18 +30,15 @@ public class SchedulingTest {
 	private Job job;
 	
 	@Test public void scheduling() throws Exception {
-		int expectedJobInstances = 5;
-		long wait = 1000;
-		long maxWait = 10000;
-		while(getJobInstancesNumber() <= expectedJobInstances && wait <= maxWait) {
-			wait += wait;
-			Thread.sleep(wait);
-		}
-		assertTrue(getJobInstancesNumber() >= expectedJobInstances);
+		final int expectedJobInstances = 5;
+		// default timeout is 10 s
+		await().untilCall(to(this).getJobInstancesNumber(),equalTo(expectedJobInstances));
 	}
 	
-	private int getJobInstancesNumber() {
+	public int getJobInstancesNumber() {
 		return jobExplorer.getJobInstances(job.getName(), 0, Integer.MAX_VALUE).size();
 	}
+	
+	
 	
 }
