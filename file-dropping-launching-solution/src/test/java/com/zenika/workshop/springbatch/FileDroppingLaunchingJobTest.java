@@ -45,7 +45,10 @@ public class FileDroppingLaunchingJobTest {
 	
 	@BeforeClass public static void init() throws Exception {
 		EmbeddedFtpServer.start();
-		FileUtils.cleanDirectory(new File(StartClient.CLIENT_INPUT_DIRECTORY));
+		File input = new File(StartClient.CLIENT_INPUT_DIRECTORY);
+		if(input.exists()) {
+			FileUtils.cleanDirectory(new File(StartClient.CLIENT_INPUT_DIRECTORY));
+		}
 	}
 	
 	@AfterClass public static void close() {
