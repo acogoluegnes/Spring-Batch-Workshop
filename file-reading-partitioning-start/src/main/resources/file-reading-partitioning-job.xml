@@ -21,6 +21,9 @@
 	<batch:job id="fileReadingPartitioningJob">
 		<batch:step id="partitionedStep" >
 			<!-- TODO xx remove the content of this <step /> tag -->
+			<batch:tasklet>
+				<batch:chunk reader="multiResourceItemReader" writer="writer" commit-interval="10"/>
+			</batch:tasklet>	
 			<!-- TODO xx configure the partition step -->
 			<!-- it uses the standalone step defined just below -->
 			<!-- don't forget to wire the partitioner and the taskExecutor -->
