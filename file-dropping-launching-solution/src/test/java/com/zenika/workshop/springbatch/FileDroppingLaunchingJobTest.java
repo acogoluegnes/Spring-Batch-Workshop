@@ -12,6 +12,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
+import org.h2.tools.Server;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -43,12 +44,16 @@ public class FileDroppingLaunchingJobTest {
 	@Autowired
 	private JobExplorer jobExplorer;
 	
+	private static Server db;
+	
 	@BeforeClass public static void init() throws Exception {
 		EmbeddedFtpServer.start();
 		File input = new File(StartClient.CLIENT_INPUT_DIRECTORY);
 		if(input.exists()) {
 			FileUtils.cleanDirectory(new File(StartClient.CLIENT_INPUT_DIRECTORY));
 		}
+		db = Server.createTcpServer().start();
+		db.stop();
 	}
 	
 	@AfterClass public static void close() {

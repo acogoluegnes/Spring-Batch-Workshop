@@ -215,6 +215,7 @@
 		<module>logging-skipped-items-solution</module>
 		<module>file-reading-partitioning-start</module>
 		<module>file-reading-partitioning-solution</module>
+		<module>file-dropping-launching-start</module>
 		<module>file-dropping-launching-solution</module>
 	</modules>
 </project>
