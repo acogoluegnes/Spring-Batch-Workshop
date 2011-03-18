@@ -13,10 +13,10 @@
 * item processor: embedding business logic in an ItemProcessor
 * logging skipped items: using a skip listener to log skipped items
 * file reading partitioning: multithreading reading and processing of files
+* file dropping launching: launching a job when there's a new file on a FTP server
 
 TBD:
 
-* triggering a job execution with an external event (using Spring Integration)
 
 ## Installation instructions
 
