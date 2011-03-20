@@ -28,7 +28,7 @@
 				</property>
 			</bean>
 		</property>
-		<property name="resource" value="classpath:contacts.csv" />
+		<property name="resource" value="classpath:contacts.txt" />
 	</bean>
 	
 	<bean id="writer" class="com.zenika.workshop.springbatch.JdbcContactItemWriter">

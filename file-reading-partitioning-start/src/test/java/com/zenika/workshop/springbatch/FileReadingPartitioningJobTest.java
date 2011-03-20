@@ -58,7 +58,7 @@ public class FileReadingPartitioningJobTest {
 	}
 	
 	@Test public void fileReadingNoPartitioning() throws Exception {
-		// TODO xx launch the test and checkout the execution time
+		// TODO 02 launch the test and checkout the execution time
 		// this test launches the non-partitioned version of the job
 		long start = System.currentTimeMillis();
 		JobExecution execution = jobLauncher.run(fileReadingJob,
@@ -70,9 +70,9 @@ public class FileReadingPartitioningJobTest {
 	}
 	
 	@Test public void fileReadingPartitioning() throws Exception {
-		// TODO xx write a test to launch the fileReadingPartitioningJob job
+		// TODO 06 write a test to launch the fileReadingPartitioningJob job
 		// just like for the non-partitioned version, measure the execution time
 		
-		// TODO xx launch the test! check if the partitioned version is faster
+		// TODO 07 launch the test! check if the partitioned version is faster
 	}		
 }

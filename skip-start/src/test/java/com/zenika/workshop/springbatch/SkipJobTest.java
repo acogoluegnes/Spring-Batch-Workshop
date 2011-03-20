@@ -44,7 +44,7 @@ public class SkipJobTest {
 		
 		// TODO 03 run the test!
 		
-		// TODO 04 take a look at the contacts.csv in src/main/resources 
+		// TODO 04 take a look at the contacts.txt in src/main/resources 
 		// try to spot the formatting error
 	}
 	

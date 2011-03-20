@@ -40,7 +40,7 @@ public class SchedulingTest {
 		await().untilCall(to(this).getJobInstancesNumber(),equalTo(expectedJobInstances));
 	}
 	
-	private int getJobInstancesNumber() {
+	public int getJobInstancesNumber() {
 		return jobExplorer.getJobInstances(job.getName(), 0, Integer.MAX_VALUE).size();
 	}
 	

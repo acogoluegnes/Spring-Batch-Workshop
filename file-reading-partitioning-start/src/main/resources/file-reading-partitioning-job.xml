@@ -7,7 +7,7 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
 
-	<!-- TODO xx take a look at the non-partitioned job and its reader/writer -->
+	<!-- TODO 01 take a look at the non-partitioned job and its reader/writer -->
 	<!-- it uses a reader that read items from multiple files (one file after the other) -->
 	<batch:job id="fileReadingJob">
 		<batch:step id="readWriteContactsStep">
@@ -20,11 +20,11 @@
 
 	<batch:job id="fileReadingPartitioningJob">
 		<batch:step id="partitionedStep" >
-			<!-- TODO xx remove the content of this <step /> tag -->
+			<!-- TODO 04 remove the content of this <step /> tag -->
 			<batch:tasklet>
 				<batch:chunk reader="multiResourceItemReader" writer="writer" commit-interval="10"/>
 			</batch:tasklet>	
-			<!-- TODO xx configure the partition step -->
+			<!-- TODO 05 configure the partition step -->
 			<!-- it uses the standalone step defined just below -->
 			<!-- don't forget to wire the partitioner and the taskExecutor -->
 		</batch:step>
@@ -37,10 +37,8 @@
 		</batch:tasklet>	
 	</batch:step>
 	
-	<!-- TODO xx define a MultiResourcePartitioner, the files are inside the ./src/main/resources/input/ directory -->
-	<bean id="partitioner" class="org.springframework.batch.core.partition.support.MultiResourcePartitioner">
-		<property name="resources" value="file:./src/main/resources/input/*.txt" />
-	</bean>
+	<!-- TODO 03 define a MultiResourcePartitioner, the files are inside the ./src/main/resources/input/ directory -->
+	
 	
 	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
 		<property name="corePoolSize" value="5" />

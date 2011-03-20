@@ -49,7 +49,7 @@ public class FlatFileReadingJobTest {
 		// it should have an ExitStatus.COMPLETED exit status
 		
 		// TODO 07 use the JdbcTemplate to check the content of the database.
-		// take a look at the src/main/resources/contacts.csv 
+		// take a look at the src/main/resources/contacts.txt 
 		// to see how many contacts should be in the contact table.
 		// hint: use the queryForInt method
 		
