@@ -14,6 +14,7 @@
 * logging skipped items: using a skip listener to log skipped items
 * file reading partitioning: multithreading reading and processing of files
 * file dropping launching: launching a job when there's a new file on a FTP server
+* database reading partitioning: reading categorized items from a database and writing them to files
 
 TBD:
 

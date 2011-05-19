@@ -9,10 +9,8 @@
 
 	
 	<batch:job id="databaseReadingPartitioningJob">
-		<batch:step id="partitionedStep" >
-			<batch:partition step="readWriteProductsPartitionedStep" partitioner="partitioner">
-				<batch:handler task-executor="taskExecutor" />
-			</batch:partition>
+		<batch:step id="partitionedStep">
+			<!-- TODO 05 configure the partitioned step -->
 		</batch:step>
 	</batch:job>
 	
@@ -22,6 +20,7 @@
 		</batch:tasklet>	
 	</batch:step>
 	
+	<!-- TODO 02 declare the partitioner -->
 	<bean id="partitioner" class="com.zenika.workshop.springbatch.ProductCategoryPartitioner">
 		<constructor-arg ref="dataSource" />
 	</bean>
@@ -36,15 +35,12 @@
 			<bean class="com.zenika.workshop.springbatch.ProductRowMapper" />
 		</property>
 		<property name="sql" value="select id,name,category from product where category = ?" />
-		<property name="preparedStatementSetter">
-			<bean class="org.springframework.jdbc.core.ArgPreparedStatementSetter">
-				<constructor-arg value="#{stepExecutionContext['category']}" />
-			</bean>
-		</property>
+		<!-- TODO 03 configure the preparedStatementSetter -->
+		<!-- it sets the argument on the JDBC statement and must refer to the partition information -->
 	</bean>
 	
 	<bean id="writer" class="org.springframework.batch.item.file.FlatFileItemWriter" scope="step">
-		<property name="resource" value="file:./target/products_#{stepExecutionContext['category']}.txt" />
+		<!-- TODO 04 configure the resource property -->
 		<property name="lineAggregator">
 			<bean class="org.springframework.batch.item.file.transform.DelimitedLineAggregator">
 				<property name="fieldExtractor">

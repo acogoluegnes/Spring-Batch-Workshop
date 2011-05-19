@@ -208,5 +208,7 @@
 		<module>file-reading-partitioning-solution</module>
 		<module>file-dropping-launching-start</module>
 		<module>file-dropping-launching-solution</module>
+		<module>database-reading-partitioning-start</module>
+		<module>database-reading-partitioning-solution</module>
 	</modules>
 </project>
