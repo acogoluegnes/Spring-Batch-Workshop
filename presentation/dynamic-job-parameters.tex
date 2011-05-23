@@ -1,0 +1,35 @@
+\section{Dynamic job parameters}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: passing values to the configuration when launching a job
+  \item Solution: using job parameters and late binding
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Use case: providing a input file dynamically to the item reader}
+ \begin{lstlisting}[language=Java]
+JobParameters jobParameters = new JobParametersBuilder()
+  .addString(%\hili{"input.file"}%, "file:./input/contacts-01.txt")
+  .toJobParameters();
+JobExecution execution = jobLauncher.run(job, jobParameters);
+ \end{lstlisting}
+ \begin{lstlisting}[language=XML]
+<bean id="reader"
+      class="org.springframework.batch.item.file.FlatFileItemReader"
+      %\hili{scope="step"}%>
+  <property name="resource %\hili{value="\#\{jobParameters['input.file']\}}%" />
+  (...)
+</bean>
+ \end{lstlisting} 
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item Spring Expression Language (SpEL)
+  \item Step scope for partitioning  
+ \end{itemize}
+\end{frame}
+
