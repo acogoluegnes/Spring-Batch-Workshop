@@ -1,0 +1,92 @@
+\section{Item processor}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: I want to add some business logic before writing the items I just read
+  \item Solution: use an \code{ItemProcessor} to process/convert read items 
+  before sending them to the \code{ItemWriter}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Use case}
+ \begin{itemize}
+  \item Reading contacts from a flat file
+  \item Registering them into the system
+  \begin{itemize}
+    \item This is the \em business logic
+  \end{itemize}
+  \item Writing the registration confirmations to the database
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{The \code{ItemProcessor} interface}
+\lstset{language=Java}
+\begin{lstlisting}
+public interface ItemProcessor<I, O> {
+
+  O process(I item) throws Exception;
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{How to implement an \code{ItemProcessor}}
+\begin{itemize}
+ \item An \code{ItemProcessor} usually delegates to existing business code
+\end{itemize}
+
+\lstset{language=Java}
+\begin{lstlisting}
+public class ContactItemProcessor implements
+             ItemProcessor<Contact, RegistrationConfirmation> {
+
+  private RegistrationService registrationService;
+
+  @Override
+  public RegistrationConfirmation process(Contact item)
+       throws Exception {
+     return registrationService.process(item);
+  }
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Registering the \code{ItemProcessor}}
+\lstset{language=XML}
+\begin{lstlisting}
+<batch:job id="itemProcessorJob">
+  <batch:step id="itemProcessorStep">
+    <batch:tasklet>
+      <batch:chunk reader="reader" %\hili{processor="processor"}% 
+                   writer="writer" commit-interval="3"/>
+    </batch:tasklet>
+  </batch:step>
+</batch:job>
+
+<bean id="registrationService"
+      class="com.zenika.workshop.springbatch.RegistrationService" />
+
+<bean id="processor"
+      class="com.zenika.workshop.springbatch.ContactItemProcessor">
+  <property name="registrationService" ref="registrationService" />
+</bean>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item Available \code{ItemProcessor} implementations
+  \begin{itemize}
+    \item Adapter, validator
+  \end{itemize}
+  \item The \code{ItemProcessor} can filter items
+ \end{itemize}
+\end{frame}
+
