@@ -1,0 +1,135 @@
+\section{Flat file reading}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: reading lines from a flat file and sending them to another source (e.g. database)
+  \item Solution: using the FlatFileItemReader
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Spring Batch's support for flat file reading}
+ \begin{itemize}
+  \item Spring Batch has built-in support for flat files
+  \begin{itemize}
+    \item Through the \code{FlatFileItemReader} for reading
+  \end{itemize}  
+  \item The \code{FlatFileItemReader} handles I/O
+  \item 2 main steps: 
+  \begin{itemize}
+    \item Configuring the \code{FlatFileItemReader}
+    \item Providing a line-to-object mapping strategy
+  \end{itemize}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{The usual suspects}
+ \begin{lstlisting}
+Susy,Hauerstock,2010-03-04
+De Anna,Raghunath,2010-03-04
+Kiam,Whitehurst,2010-03-04
+Alecia,Van Holst,2010-03-04
+Hing,Senecal,2010-03-04
+\end{lstlisting}
+
+\begin{center}
+\begin{picture}(0,0)
+\put(0,15){\vector(0,-1){15}} 
+\end{picture}
+\end{center}
+
+\lstset{language=Java}
+\begin{lstlisting}
+public class Contact {
+
+  private Long id;
+  private String firstname,lastname;
+  private Date birth;
+  
+  (...)
+}
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{What do we need to read a flat file?}
+ \begin{itemize}
+  \item How to tokenize a line
+  \item How to map the line with a Java object
+  \item Where to find the file to read
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+ \frametitle{The \code{FlatFileItemReader} configuration}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="reader"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper">
+    <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+      <property name="lineTokenizer">
+        <bean 
+  class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+          <property name="names" value="firstname,lastname,birth" />
+        </bean>
+      </property>
+      <property name="fieldSetMapper">
+        <bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+      </property>
+    </bean>
+  </property>
+  <property name="resource" value="classpath:contacts.txt" />
+</bean>
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{The line-to-object mapping strategy}
+ \begin{itemize}
+  \item A \code{FieldSetMapper} to map a line with an object
+  \item More about business logic, so typically implemented by developer
+  \item Spring Batch provides straightforward implementations
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Custom \code{FieldSetMapper} implementation}
+
+\lstset{language=Java}
+\begin{lstlisting}
+package com.zenika.workshop.springbatch;
+
+import org.springframework.batch.item.file.mapping.FieldSetMapper;
+import org.springframework.batch.item.file.transform.FieldSet;
+import org.springframework.validation.BindException;
+
+public class ContactFieldSetMapper implements FieldSetMapper<Contact> {
+
+  @Override
+  public Contact mapFieldSet(FieldSet fieldSet) throws BindException {
+    return new Contact(
+      fieldSet.readString("firstname"),
+      fieldSet.readString("lastname"), 
+      fieldSet.readDate("birth","yyyy-MM-dd")
+    );
+  }
+}
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item \code{FlatFileItemWriter} to write flat file
+  \item Fixed-length format (different tokenizer)
+  \item Skipping badly formatted lines
+ \end{itemize}
+\end{frame}

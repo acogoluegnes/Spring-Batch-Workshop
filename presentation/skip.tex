@@ -1,0 +1,57 @@
+\section{Skip}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: my job fails miserably because of a tiny error in my input file
+  \item Solution: skipping lines without failing the whole execution
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{A CSV file with a badly formatted line}
+ 
+\begin{lstlisting}
+Susy,Hauerstock,2010-03-04
+De-Anna,Raghunath,2010-03-04
+Kiam,Whitehurst,2010-03-04
+Alecia,Van Holst,%\hili{09-23-2010}%
+Hing,Senecal,2010-03-04
+Kannan,Pirkle,2010-03-04
+Row,Maudrie,2010-03-04
+Voort,Philbeck,2010-03-04
+\end{lstlisting}
+ 
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Skip configuration}
+ \begin{itemize}
+  \item Choose the exceptions to skip
+  \item Set the max number of items to skip
+ \end{itemize}
+
+ \begin{lstlisting}[language=XML]
+<batch:job id="skipJob">
+  <batch:step id="skipStep">
+    <batch:tasklet>
+      <batch:chunk reader="reader" writer="writer" commit-interval="3"
+                   skip-limit="10">
+        <batch:skippable-exception-classes>
+          <batch:include
+          class="org.springframework.batch.item.file.FlatFileParseException"/>
+        </batch:skippable-exception-classes>
+      </batch:chunk>
+    </batch:tasklet>
+  </batch:step>
+</batch:job>
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize} 
+  \item Logging skipped items with a \code{SkipListener}
+  \item Setting a custom \code{SkipPolicy}
+ \end{itemize}
+\end{frame}

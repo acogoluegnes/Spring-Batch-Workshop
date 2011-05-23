@@ -1,19 +1,25 @@
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
-\usepackage{listings}
+\usepackage{listings,color}
 \usepackage{relsize}
 \usepackage{graphicx}
 
+
+
 \usetheme{Montpellier}
 
+% code in slides
 \newcommand{\code}[1]{\texttt{#1}}
+% highlight code in listings
+\newcommand{\hili}[1]{\textbf{\color{red} #1}}
 
 \lstset{
  basicstyle=\tiny,
  showspaces=false,
  showstringspaces=false,
  frame=single,
- stringstyle=\ttfamily
+ stringstyle=\ttfamily,
+ escapechar=\%
 }
 
 \title{Spring Batch Workshop}
@@ -32,6 +38,9 @@
 \input{spring-batch-overview.tex}
 \input{hello-world.tex}
 \input{chunk-processing.tex}
+\input{flat-file-reading.tex}
+\input{skip.tex}
+
 
 \end{document}
 
