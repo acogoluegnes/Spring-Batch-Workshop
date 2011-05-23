@@ -4,3 +4,15 @@
 **/target/*
 **/.settings/*
 .settings/*
+*.snm
+*.log
+*.tex~
+*.*.backup
+*.aux
+*.bbl
+*.blg
+*.nav
+*.out
+*.toc
+*.vrb
+

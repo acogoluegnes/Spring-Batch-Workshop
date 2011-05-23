@@ -1,0 +1,93 @@
+\section{Hello World}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: getting started with Spring Batch
+  \item Solution: writing a simple ``Hello World'' job
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Structure of a job}
+ \begin{itemize}
+  \item A Spring Batch job is made of steps
+  \item The Hello World job has one step
+  \item The processing is implemented in a \code{Tasklet}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Hello World \code{Tasklet}}
+\lstset{language=Java}
+\begin{lstlisting}
+public class HelloWorldTasklet implements Tasklet {
+
+  @Override
+  public RepeatStatus execute(
+      StepContribution contribution,
+      ChunkContext chunkContext) throws Exception {
+    System.out.println("Hello world!");
+    return RepeatStatus.FINISHED;
+  }
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The configuration of the Hello World job}
+\lstset{language=XML}
+\begin{lstlisting}
+<batch:job id="helloWorldJob">
+  <batch:step id="helloWorldStep">
+    <batch:tasklet>
+      <bean class="com.zenika.workshop.springbatch.HelloWorldTasklet" />
+    </batch:tasklet>
+  </batch:step>
+</batch:job>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Spring Batch needs some infrastructure beans}
+\begin{itemize}
+ \item Let's use the typical test configuration
+\end{itemize}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="transactionManager"
+      class="o.s.b.support.transaction.ResourcelessTransactionManager" />
+
+<bean id="jobRepository"   
+      class="o.s.b.core.repository.support.MapJobRepositoryFactoryBean" />
+
+<bean id="jobLauncher"
+      class="o.s.b.core.launch.support.SimpleJobLauncher">
+  <property name="jobRepository" ref="jobRepository" />
+</bean>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Running the test in a JUnit test}
+
+\lstset{language=Java}
+\begin{lstlisting}
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration("/hello-world-job.xml")
+public class HelloWorldJobTest {
+
+  @Autowired
+  private Job job;
+
+  @Autowired
+  private JobLauncher jobLauncher;
+
+  @Test public void helloWorld() throws Exception {
+    JobExecution execution = jobLauncher.run(job, new JobParameters());
+    assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
+  }
+}
+\end{lstlisting}
+\end{frame}

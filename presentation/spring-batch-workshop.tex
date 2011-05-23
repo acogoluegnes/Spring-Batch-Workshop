@@ -1,0 +1,36 @@
+\documentclass{beamer}
+\usepackage[utf8]{inputenc}
+\usepackage{listings}
+\usepackage{relsize}
+\usepackage{graphicx}
+
+\usetheme{Montpellier}
+
+\newcommand{\code}[1]{\texttt{#1}}
+
+\lstset{
+ basicstyle=\tiny,
+ showspaces=false,
+ showstringspaces=false,
+ frame=single,
+ stringstyle=\ttfamily
+}
+
+\title{Spring Batch Workshop}
+\author{Arnaud Cogoluègnes}
+\institute{Consultant with Zenika, Co-author Spring Batch in Action}
+
+\begin{document}
+
+\begin{frame}
+\titlepage
+\end{frame}
+
+\input{overview.tex}
+\input{ide-set-up.tex}
+\input{ide-spring-support.tex}
+\input{spring-batch-overview.tex}
+\input{hello-world.tex}
+
+\end{document}
+
