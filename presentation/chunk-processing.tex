@@ -1,0 +1,204 @@
+\section{Chunk processing}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: processing large amounts of data efficiently
+  \item Solution: using chunk processing
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{What is chunk processing?}
+ \begin{itemize}
+  \item Batch jobs often read, process, and write items
+  \item e.g.
+  \begin{itemize}
+    \item Reading items from a file
+    \item Then processing (converting) items
+    \item Writing items to a database  
+  \end{itemize}
+  \item Spring Batch calls this ``chunk processing''
+  \item a chunk = a set of items
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Chunk processing with Spring Batch}
+ \begin{itemize}
+  \item Spring Batch
+  \begin{itemize}
+    \item handles the iteration logic
+    \item uses a transaction for each chunk
+    \item lets you choose the chunk size
+    \item defines interfaces for each part of the processing
+  \end{itemize}
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{The reading phase}
+\begin{itemize}
+ \item Spring Batch creates chunks of items by calling \code{read()}
+ \item Reading ends when \code{read()} returns \code{null}
+\end{itemize}
+
+\lstset{language=Java}
+\begin{lstlisting}
+public interface ItemReader<T> {
+
+  T read() throws Exception, UnexpectedInputException, 
+                  ParseException, NonTransientResourceException;
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The processing phase}
+\begin{itemize}
+ \item Once a chunk is created, items are sent to the processor
+ \item Optional
+\end{itemize}
+
+\lstset{language=Java}
+\begin{lstlisting}
+public interface ItemProcessor<I, O> {
+
+  O process(I item) throws Exception;
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The writing phase}
+\begin{itemize}
+ \item Receives all the items of the chunk
+ \item Allows for batch update (more efficient)
+\end{itemize}
+
+\lstset{language=Java}
+\begin{lstlisting}
+public interface ItemWriter<T> {
+
+  void write(List<? extends T> items) throws Exception;
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+ \frametitle{An example}
+ \begin{itemize}
+  \item Let's implement a (too?) simple chunk-oriented step!  
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The \code{ItemReader}}
+\lstset{language=Java}
+\begin{lstlisting}
+public class StringItemReader implements ItemReader<String> {
+
+  private List<String> list;
+
+  public StringItemReader() {
+    this.list = new ArrayList<String>(Arrays.asList(
+      "1","2","3","4","5","6","7")
+    );
+  }
+
+  @Override
+  public String read() throws Exception, UnexpectedInputException,
+                         ParseException, NonTransientResourceException {
+    return !list.isEmpty() ? list.remove(0) : null;
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The \code{ItemProcessor}}
+\lstset{language=Java}
+\begin{lstlisting}
+public class StringItemProcessor implements ItemProcessor<String, String> {
+
+  @Override
+  public String process(String item) throws Exception {
+    return "*** "+item+" ***";
+  }
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The \code{ItemWriter}}
+\lstset{language=Java}
+\begin{lstlisting}
+public class StringItemWriter implements ItemWriter<String> {
+
+  private static final Logger LOGGER =
+    LoggerFactory.getLogger(StringItemWriter.class);
+
+  @Override
+  public void write(List<? extends String> items) throws Exception {
+    for(String item : items) {
+      LOGGER.info("writing "+item);
+    }
+  }
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Configuring the job}
+\lstset{language=XML}
+\begin{lstlisting}
+<batch:job id="chunkProcessingJob">
+  <batch:step id="chunkProcessingStep">
+    <batch:tasklet>
+      <batch:chunk reader="reader" processor="processor" writer="writer"
+                   commit-interval="3"
+      />
+    </batch:tasklet>
+  </batch:step>
+</batch:job>
+
+<bean id="reader" class="com.zenika.workshop.springbatch.StringItemReader" />
+
+<bean id="processor" 
+      class="com.zenika.workshop.springbatch.StringItemProcessor" />
+
+<bean id="writer" class="com.zenika.workshop.springbatch.StringItemWriter" />
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Considerations}
+ \begin{itemize}
+  \item Do I always need to write my \code{ItemReader}/\code{Processor}/\code{Writer}?
+  \item No, Spring Batch provides ready-to-use components for common datastores
+  \begin{itemize}
+    \item Flat/XML files, databases, JMS, etc.
+  \end{itemize}
+  \item As an application developer, you
+  \begin{itemize}
+    \item Configure these components
+    \item Provides some logic (e.g. mapping a line with a domain object)
+  \end{itemize}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item Reader/writer implementation for flat/XML files, database, JMS
+  \item Skipping items when something goes wrong
+  \item Listeners to react to the chunk processing  
+ \end{itemize}
+\end{frame}
+
