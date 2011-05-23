@@ -1,0 +1,56 @@
+\section{JDBC paging}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: reading large result sets from the database with a stable memory footprint 
+  \item Solution: using the \code{JdbcPagingItemReader}, which uses paging to handle large result sets
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{\code{JdbcPagingItemReader} configuration}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="reader"
+      class="org.springframework.batch.item.database.JdbcPagingItemReader">
+  <property name="dataSource" ref="dataSource" />
+  <property name="pageSize" value="10" />
+  <property name="queryProvider">
+    <bean class="o.s.b.item.database.support.SqlPagingQueryProviderFactoryBean">
+      <property name="dataSource" ref="dataSource" />
+      <property name="selectClause" 
+                value="select id,firstname,lastname,birth" />
+      <property name="fromClause" value="from contact" />
+      <property name="sortKey" value="id" />
+    </bean>
+  </property>
+  <property name="rowMapper">
+    <bean class="com.zenika.workshop.springbatch.ContactRowMapper" />
+  </property>
+</bean>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+\frametitle{Paging or cursors?}
+\begin{itemize}
+ \item By paging, you send multiple queries to the database
+ \item Alternative: cursor-based item reader
+ \begin{itemize}
+  \item Spring Batch “streams” the result set from the DB
+  \item Only one query
+ \end{itemize}
+ \item Paging always works, cursor-based reader depends on driver implementation and database
+\end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item Paging readers for Hibernate, JPA, iBatis
+  \item Cursor-based readers
+ \end{itemize}
+\end{frame}
+
