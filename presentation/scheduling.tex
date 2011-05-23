@@ -1,0 +1,51 @@
+\section{Scheduling}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: scheduling a job to execute periodically
+  \item Solution: using the scheduling support in Spring
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{A class to launch the job}
+ \begin{lstlisting}[language=Java]
+public class ImportLauncher {
+
+  public void launch() throws Exception {
+    JobExecution exec = jobLauncher.run(
+      job,
+      new JobParametersBuilder() 
+        .addLong("time", System.currentTimeMillis())
+        .toJobParameters()
+    );
+  }
+}
+ \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Spring scheduling configuration}
+ \begin{lstlisting}[language=XML]
+<bean id="importLauncher"
+      class="com.zenika.workshop.springbatch.ImportLauncher" />
+
+<task:scheduled-tasks>
+  <task:scheduled ref="importLauncher" method="launch" 
+                  fixed-delay="1000" />
+</task:scheduled-tasks>
+ \end{lstlisting}
+ \begin{itemize}
+  \item \code{cron} attribute available
+ \end{itemize}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item Threading settings in Spring Scheduler
+  \item Spring support for Quartz
+ \end{itemize}
+\end{frame}
+
