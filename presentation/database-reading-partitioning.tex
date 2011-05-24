@@ -1,0 +1,165 @@
+\section{Database reading partitioning}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: I want to export items from different categories from a database to files
+  \item Solution: provide a partition strategy and use partitioning
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{The use case}
+ \begin{center}
+ \begin{tabular}{l|l|l}
+  \hline
+  ID & name & category \\
+  \hline
+  1 & Book 01 & books \\
+  2 & DVD 01 & dvds \\
+  3 & DVD 02 & dvds \\
+  4 & Book 02 & books \\
+  \hline
+ \end{tabular}
+ \end{center}
+ \begin{center}
+  \begin{picture}(100,0)
+   \put(50,0){\line(0,-1){10}}
+   \put(0,-10){\line(1,0){100}}
+   \put(0,-10){\vector(0,-1){10}}
+   \put(100,-10){\vector(0,-1){10}}
+  \end{picture}
+ \end{center} 
+ \begin{center}
+  \begin{picture}(150,80)
+   % books file
+   \put(1,63){\tiny{products\_books.txt}}
+   \put(0,0){\line(0,1){60}}
+   \put(50,0){\line(0,1){60}}
+   \put(0,0){\line(1,0){50}}
+   \put(0,60){\line(1,0){50}}
+   \put(1,53){\tiny{1,Book 01,books}}
+   \put(1,43){\tiny{4,Book 02,books}}
+   % dvds file
+   \put(101,63){\tiny{products\_dvds.txt}}
+   \put(100,0){\line(0,1){60}}
+   \put(150,0){\line(0,1){60}}
+   \put(100,0){\line(1,0){50}}
+   \put(100,60){\line(1,0){50}}
+   \put(101,53){\tiny{2,DVD 01,dvds}}
+   \put(101,43){\tiny{3,DVD 02,dvds}}   
+  \end{picture}
+ \end{center}
+\end{frame}
+
+
+\begin{frame}
+ \frametitle{Partitioning based on categories}
+ \begin{itemize}
+  \item 2 partitions in this case  
+ \end{itemize}
+ \begin{center}
+ \begin{tabular}{l|l|l}
+  \hline
+  ID & name & category \\
+  \hline
+  \rowcolor{cyan}1 & Book 01 & books \\
+  \rowcolor{yellow}2 & DVD 01 & dvds \\
+  \rowcolor{yellow}3 & DVD 02 & dvds \\
+  \rowcolor{cyan}4 & Book 02 & books \\
+  \hline
+ \end{tabular}
+ \end{center}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Partitioning logic with the \code{Partitioner} interface}
+\lstset{language=Java}
+\begin{lstlisting}
+public class ProductCategoryPartitioner implements Partitioner {
+  (...)
+
+  @Override
+  public Map<String, ExecutionContext> partition(int gridSize) {
+    List<String> categories = jdbcTemplate.queryForList(
+      "select distinct(category) from product",
+      String.class
+    );
+    Map<String, ExecutionContext> results = 
+      new LinkedHashMap<String, ExecutionContext>();
+    for(String category : categories) {
+      ExecutionContext context = new ExecutionContext();
+      context.put("category", category);
+      results.put("partition."+category, context);
+    } 
+    return results;
+  }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Components can refer to partition parameters}
+\begin{itemize}
+ \item They need to use the step scope 
+\end{itemize}
+
+\lstset{language=Java}
+\begin{lstlisting}
+<bean id="reader" 
+      class="org.springframework.batch.item.database.JdbcCursorItemReader" 
+      scope="step">
+  <property name="sql" 
+            value="select id,name,category from product where category = ?" />
+  <property name="preparedStatementSetter">
+    <bean class="org.springframework.jdbc.core.ArgPreparedStatementSetter">
+      <constructor-arg value="%\hili{\#\{stepExecutionContext['category']\}]}%" />
+    </bean>
+  </property>
+</bean>
+
+<bean id="writer" 
+      class="org.springframework.batch.item.file.FlatFileItemWriter" 
+      scope="step">
+  <property name="resource"
+     value="%\hili{file:./target/products\_\#\{stepExecutionContext['category']\}.txt}%" />
+ 
+  (...)
+</bean>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Configure the partitioned step}
+\begin{itemize}
+ \item The default implementation is multi-threaded
+\end{itemize}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<batch:job id="databaseReadingPartitioningJob">
+  <batch:step id="partitionedStep" >
+    <batch:partition step="readWriteProductsPartitionedStep" 
+                     partitioner="partitioner">
+      <batch:handler task-executor="taskExecutor" />
+    </batch:partition>
+  </batch:step>
+</batch:job>
+
+<batch:step id="readWriteProductsPartitionedStep">
+  <batch:tasklet>
+    <batch:chunk reader="reader" writer="writer" commit-interval="10" />
+  </batch:tasklet>	
+</batch:step>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item Check existing partitioner implementations
+  \item Check other partition handler implementations
+  \item Check other scaling strategies
+ \end{itemize}
+\end{frame}
+
