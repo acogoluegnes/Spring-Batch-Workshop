@@ -28,7 +28,7 @@
 		<int:poller fixed-rate="1000" />
 	</int-ftp:inbound-channel-adapter>
 	
-	<bean id="ftpClientFactory" class="com.zenika.workshop.springbatch.integration.DefaultFtpSessionFactory">
+	<bean id="ftpClientFactory" class="org.springframework.integration.ftp.session.DefaultFtpSessionFactory">
 		<property name="host" value="localhost"/>
 		<property name="port" value="2222"/>
 		<property name="username" value="admin"/>
