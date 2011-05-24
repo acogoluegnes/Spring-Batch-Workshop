@@ -1,0 +1,81 @@
+\section{Logging skipped items}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: logging skipped items
+  \item Solution: using a \code{SkipListener}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{2 steps to log skipped items}
+ \begin{itemize}
+  \item Writing the \code{SkipListener} (and the logging code)
+  \item Registering the listener on the step  
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+ \frametitle{Writing the \code{SkipListener}}
+ \lstset{language=Java}
+ \begin{lstlisting}
+package com.zenika.workshop.springbatch;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.listener.SkipListenerSupport;
+
+public class Slf4jSkipListener<T,S> extends SkipListenerSupport<T, S> {
+
+  private static final Logger LOG = LoggerFactory.getLogger(
+      Slf4jSkipListener.class);
+
+  @Override
+  public void onSkipInRead(Throwable t) {
+    LOG.warn("skipped item: {}",t.toString());
+  }
+
+}  
+ \end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{Registering the \code{SkipListener}}
+\lstset{language=XML}
+\begin{lstlisting}
+<batch:job id="loggingSkippedItemsJob">
+  <batch:step id="loggingSkippedItemsStep">
+    <batch:tasklet>
+      <batch:chunk reader="reader" writer="writer" commit-interval="3"
+                   skip-limit="10">
+        <batch:skippable-exception-classes>
+          <batch:include
+           class="org.springframework.batch.item.file.FlatFileParseException"/>
+        </batch:skippable-exception-classes>
+      </batch:chunk>
+      <batch:listeners>
+        %\hili{\textless batch:listener ref="skipListener" /\textgreater}%
+      </batch:listeners>
+    </batch:tasklet>
+  </batch:step>
+</batch:job>
+
+%\hili{\textless bean id="skipListener" class="com.zenika.workshop.springbatch.Slf4jSkipListener" /\textgreater}%
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item Other listeners in Spring Batch
+  \begin{itemize}
+   \item \code{ChunkListener}, 
+   \code{Item(Read/Process/Write)Listener}, \code{ItemStream}, 
+   \code{StepExecutionListener}, \code{JobExecutionListener}
+  \end{itemize}
+ \end{itemize}
+\end{frame}
+
