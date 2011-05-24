@@ -1,5 +1,9 @@
 # Spring Batch Workshop
 
+## Slides
+
+The slides in are in the presentation directory (spring-batch-workshop.pdf).
+
 ## Samples
 
 * hello world: writing "Hello World" on the console
