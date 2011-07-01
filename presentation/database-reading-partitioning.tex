@@ -96,6 +96,33 @@ public class ProductCategoryPartitioner implements Partitioner {
   }
 }
 \end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Output of the \code{Partitioner}}
+
+\begin{itemize}
+ \item Excerpt: 
+\end{itemize}
+
+\lstset{language=Java}
+\begin{lstlisting}
+for(String category : categories) {
+  ExecutionContext context = new ExecutionContext();
+  context.put("category", category);
+  results.put("partition."+category, context);
+}
+\end{lstlisting}
+\begin{itemize}
+ \item Results: 
+\end{itemize}
+
+\begin{lstlisting}
+partition.books = { category => 'books' }
+partition.dvds  = { category => 'dvds' }
+\end{lstlisting}
+
 \end{frame}
 
 \begin{frame}[fragile]
