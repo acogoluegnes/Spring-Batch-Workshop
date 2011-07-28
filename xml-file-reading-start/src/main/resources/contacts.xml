@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<contacts>
+	<contact>
+		<firstname>De-Anna</firstname>
+		<lastname>Raghunath</lastname>
+		<birth>2010-03-04</birth>
+	</contact>
+	<contact>
+		<firstname>Susy</firstname>
+		<lastname>Hauerstock</lastname>
+		<birth>2010-03-04</birth>
+	</contact>
+	<contact>
+		<firstname>Kiam</firstname>
+		<lastname>Whitehusrt</lastname>
+		<birth>2010-03-04</birth>
+	</contact>
+	<contact>
+		<firstname>Alecia</firstname>
+		<lastname>Van Holst</lastname>
+		<birth>2010-03-04</birth>
+	</contact>
+	<contact>
+		<firstname>Hing</firstname>
+		<lastname>Senecal</lastname>
+		<birth>2010-03-04</birth>
+	</contact>
+</contacts>

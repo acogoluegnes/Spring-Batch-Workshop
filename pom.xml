@@ -190,6 +190,8 @@
 		<module>chunk-processing-solution</module>
 		<module>flat-file-reading-start</module>
 		<module>flat-file-reading-solution</module>
+		<module>xml-file-reading-start</module>
+		<module>xml-file-reading-solution</module>
 		<module>skip-start</module>
 		<module>skip-solution</module>
 		<module>dynamic-job-parameters-start</module>
