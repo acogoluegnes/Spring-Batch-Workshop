@@ -1,0 +1,104 @@
+\section{XML file reading}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: reading items from a XML file and sending them to another source (e.g. database)
+  \item Solution: using the \code{StaxEventItemReader}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Spring Batch's support for XML file reading}
+ \begin{itemize}
+  \item Spring Batch has built-in support for XML files
+  \begin{itemize}
+    \item Through the \code{StaxEventItemReader} for reading
+  \end{itemize}  
+  \item The \code{StaxEventItemReader} handles I/O for efficient XML processing
+  \item 2 main steps: 
+  \begin{itemize}
+    \item Configuring the \code{StaxEventItemReader}
+    \item Configuring a Spring OXM's \code{Unmarshaller}
+  \end{itemize}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{The usual suspects}
+ \lstset{language=XML}
+ \begin{lstlisting}
+<?xml version="1.0" encoding="UTF-8"?>
+<contacts>
+  <contact>
+    <firstname>De-Anna</firstname>
+    <lastname>Raghunath</lastname>
+    <birth>2010-03-04</birth>
+  </contact>
+  <contact>
+    <firstname>Susy</firstname>
+    <lastname>Hauerstock</lastname>
+    <birth>2010-03-04</birth>
+  </contact>
+  (...)
+</contacts>
+\end{lstlisting}
+
+\begin{center}
+\begin{picture}(0,0)
+\put(0,15){\vector(0,-1){15}} 
+\end{picture}
+\end{center}
+
+\lstset{language=Java}
+\begin{lstlisting}
+public class Contact {
+
+  private Long id;
+  private String firstname,lastname;
+  private Date birth;
+  
+  (...)
+}
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{The \code{StaxEventItemReader} configuration}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="reader" class="org.springframework.batch.item.xml.StaxEventItemReader">
+  <property name="fragmentRootElementName" value="contact" />
+  <property name="unmarshaller">
+    <bean class="org.springframework.oxm.xstream.XStreamMarshaller">
+      <property name="aliases">
+        <map>
+          <entry key="contact" value="com.zenika.workshop.springbatch.Contact" />
+        </map>
+      </property>
+      <property name="converters">
+        <bean class="com.thoughtworks.xstream.converters.basic.DateConverter">
+          <constructor-arg value="yyyy-MM-dd" />
+          <constructor-arg><array /></constructor-arg>
+          <constructor-arg value="true" />
+        </bean>
+      </property>
+    </bean>
+  </property>
+  <property name="resource" value="classpath:contacts.xml" />
+</bean>
+\end{lstlisting}
+  \begin{itemize}
+    \item NB: Spring OXM supports XStream, JAXB2, etc. 
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item \code{StaxEventItemWriter} to write XML files
+  \item Spring OXM's support for other marshallers
+  \item Skipping badly formatted lines
+ \end{itemize}
+\end{frame}
