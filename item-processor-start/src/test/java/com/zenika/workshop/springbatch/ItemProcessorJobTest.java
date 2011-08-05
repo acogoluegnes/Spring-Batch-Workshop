@@ -42,7 +42,7 @@ public class ItemProcessorJobTest {
 	
 	// TODO 07 remove the @Ignore annotation from the test method
 	@Ignore
-	@Test public void flatFileReading() throws Exception {
+	@Test public void itemProcessor() throws Exception {
 		// TODO 08 launch the test!
 		JobExecution execution = jobLauncher.run(job, new JobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());

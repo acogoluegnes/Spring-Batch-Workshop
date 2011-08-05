@@ -39,7 +39,7 @@ public class ItemProcessorJobTest {
 		jdbcTemplate.update("delete from registration_confirmation");
 	}
 	
-	@Test public void flatFileReading() throws Exception {
+	@Test public void itemProcessor() throws Exception {
 		JobExecution execution = jobLauncher.run(job, new JobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
 		assertEquals(5,jdbcTemplate.queryForInt("select count(1) from registration_confirmation"));
