@@ -1,0 +1,167 @@
+\section{Item enrichment}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: I want to enrich read items with a Web Service before they get written
+  \item Solution: implement an \code{ItemProcessor} to make the Web Service call
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Use case}
+ \begin{itemize}
+  \item Reading contacts from a flat file
+  \item Enriching the contact with their social security number  
+  \item Writing the whole contact in the database
+ \end{itemize}
+\end{frame}
+
+
+\begin{frame}[fragile]
+\frametitle{The input file and the domain object}
+\begin{lstlisting}
+1,De-Anna,Raghunath,2010-03-04
+2,Susy,Hauerstock,2010-03-04
+3,Kiam,Whitehurst,2010-03-04
+4,Alecia,Van Holst,2010-03-04
+5,Hing,Senecal,2010-03-04
+\end{lstlisting}
+\begin{itemize}
+ \item NB: no SSN!
+\end{itemize}
+\lstset{language=Java}
+\begin{lstlisting}
+public class Contact {
+
+  private Long id;	
+  private String firstname,lastname;	
+  private Date birth;	
+  private String ssn;
+  (...)
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The Web Service}
+\begin{itemize}
+ \item It can be any kind of Web Service (SOAP, REST)
+ \item Our Web Service
+ \begin{itemize}
+    \item URL: \code{http://host/service?firstname=John\&lastname=Doe}
+    \item It returns
+ \end{itemize} 
+\end{itemize}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<contact>
+  <firstname>John</firstname>
+  <lastname>Doe</lastname>
+  <ssn>987-65-4329</ssn>
+</contact>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{The \code{ItemProcessor} implementation}
+\lstset{language=Java}
+\begin{lstlisting}
+package com.zenika.workshop.springbatch;
+
+import javax.xml.transform.dom.DOMSource;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.web.client.RestTemplate;
+import org.w3c.dom.NodeList;
+
+public class SsnWebServiceItemProcessor implements
+             ItemProcessor<Contact, Contact> {
+	
+  private RestTemplate restTemplate = new RestTemplate();
+  private String url;
+
+  @Override
+  public Contact process(Contact item) throws Exception {
+    DOMSource source = restTemplate.getForObject(url,DOMSource.class, 
+      item.getFirstname(),item.getLastname());
+    String ssn = extractSsnFromXml(item, source);
+    item.setSsn(ssn);
+    return item;
+  }
+
+  private String extractSsnFromXml(Contact item, DOMSource source) {
+    // some DOM code
+  }
+  (...)
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Configuring the \code{SsnWebServiceItemProcessor}}
+\lstset{language=XML}
+\begin{lstlisting}
+<batch:job id="itemEnrichmentJob">
+  <batch:step id="itemEnrichmentStep">
+    <batch:tasklet>
+      <batch:chunk reader="reader" processor="processor" writer="writer" 
+                   commit-interval="3"/>
+    </batch:tasklet>
+  </batch:step>
+</batch:job>
+
+<bean id="processor" 
+      class="com.zenika.workshop.springbatch.SsnWebServiceItemProcessor">
+  <property name="url" 
+  value="http://localhost:8085/?firstname={firstname}&amp;lastname={lastname}" />
+</bean>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+ \frametitle{But my Web Service has a lot of latency!}
+ \begin{itemize}
+  \item The Web Service call can benefit from multi-threading
+  \item Why not spawning several processing at the same time?
+  \item We could wait for the completion in the \code{ItemWriter}
+  \item Let's use some asynchronous \code{ItemProcessor} and \code{ItemWriter}
+  \begin{itemize}
+    \item Provided in the Spring Batch Integration project
+  \end{itemize}  
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+\frametitle{Using async \code{ItemProcessor} and \code{ItemWriter}}
+\begin{itemize}
+  \item This is only about wrapping  
+ \end{itemize}
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="processor"
+      class="org.springframework.batch.integration.async.AsyncItemProcessor">
+  <property name="delegate" ref="processor" />
+  <property name="taskExecutor" ref="taskExecutor" />
+</bean>
+
+<bean id="writer"
+      class="org.springframework.batch.integration.async.AsyncItemWriter">
+  <property name="delegate" ref="writer" />							
+</bean>
+
+<task:executor id="taskExecutor" pool-size="5" />
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item Business delegation with an \code{ItemProcessor}
+  \item Available \code{ItemProcessor} implementations
+  \begin{itemize}
+    \item Adapter, validator
+  \end{itemize}
+  \item The \code{ItemProcessor} can filter items
+ \end{itemize}
+\end{frame}
+

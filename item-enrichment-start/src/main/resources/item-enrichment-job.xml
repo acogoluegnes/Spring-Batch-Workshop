@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+	<!-- TODO 05 create an itemEnrichmentJob job -->
+	<!-- it has a chunk-oriented step that uses the reader, the processor, and the writer -->
+	
+	<!-- TODO 04 configure the SsnWebServiceItemProcessor -->
+
+			
+	<bean id="reader" class="org.springframework.batch.item.file.FlatFileItemReader">
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer">
+					<bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="names" value="id,firstname,lastname,birth" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+				</property>
+			</bean>
+		</property>
+		<property name="resource" value="classpath:contacts.txt" />
+	</bean>
+	
+	<bean id="writer" class="com.zenika.workshop.springbatch.JdbcContactItemWriter">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
+	<jdbc:embedded-database type="H2" id="dataSource">
+		<jdbc:script location="classpath:/create-tables.sql" />
+	</jdbc:embedded-database>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean" />
+
+	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+	
+	<bean class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	
+	<!-- TODO 11 let's try now with to parallelize the processing! -->
+	<!-- create an asyncItemEnrichmentJob that wraps the writer and processor -->
+	<!-- in their respective asynchronous versions -->
+	<!-- don't forget to declare the task executor with the task namespace! -->
+	
+
+</beans>
