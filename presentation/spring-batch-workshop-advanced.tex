@@ -7,9 +7,6 @@
 \usepackage{array,multirow}
 \usepackage{colortbl}
 
-
-
-
 \usetheme{Montpellier}
 
 % code in slides
@@ -26,7 +23,7 @@
  escapechar=\%
 }
 
-\title{Spring Batch Workshop}
+\title{Spring Batch Workshop (advanced)}
 \author{Arnaud Cogoluègnes}
 \institute{Consultant with Zenika, Co-author Spring Batch in Action}
 
@@ -41,29 +38,12 @@
  \scriptsize{\tableofcontents}
 \end{frame}
 
-
-\input{overview.tex}
-\input{ide-set-up.tex}
-\input{ide-spring-support.tex}
-\input{spring-batch-overview.tex}
-\input{hello-world.tex}
-\input{chunk-processing.tex}
-\input{flat-file-reading.tex}
-\input{skip.tex}
-\input{dynamic-job-parameters.tex}
-\input{jdbc-paging.tex}
-\input{execution-metadata.tex}
-\input{scheduling.tex}
-\input{item-processor.tex}
-\input{logging-skipped-items.tex}
-
-\begin{frame}
- \frametitle{This is the end... or not!}
- \begin{itemize}
-  \item Check out the advanced workshop!
-  \item See you and thanks!
- \end{itemize}
-\end{frame}
+\input{overview-advanced.tex}
+\input{xml-file-reading.tex}
+\input{item-enrichment.tex}
+\input{file-reading-partitioning.tex}
+\input{file-dropping-launching.tex}
+\input{database-reading-partitioning.tex}
 
 \end{document}
 
