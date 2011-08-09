@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:batch="http://www.springframework.org/schema/batch"
+	xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+	xsi:schemaLocation="http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
+
+	<batch:job id="complexFlowJob">
+		<batch:step id="digestStep">
+			<batch:tasklet ref="digestTasklet" />
+			<batch:next on="COMPLETED" to="flatFileReadingStep"/>
+			<batch:next on="INCORRECT FILE" to="trackIncorrectFileStep"/>			
+			<batch:listeners>
+				<batch:listener>
+					<bean class="com.zenika.workshop.springbatch.DigestListener" />
+				</batch:listener>
+			</batch:listeners>			
+		</batch:step>		
+		<batch:step id="flatFileReadingStep">
+			<batch:tasklet>
+				<batch:chunk reader="reader" writer="writer" commit-interval="3" skip-limit="10">
+					<batch:skippable-exception-classes>
+						<batch:include class="org.springframework.batch.item.file.FlatFileParseException"/>
+					</batch:skippable-exception-classes>
+				</batch:chunk>
+			</batch:tasklet>		
+			<batch:end on="COMPLETED"/>	
+			<batch:next on="COMPLETED WITH SKIPS" to="trackSkipsStep"/>
+			<batch:listeners>
+				<batch:listener>
+					<bean class="com.zenika.workshop.springbatch.SkipsListener" />
+				</batch:listener>
+			</batch:listeners>
+		</batch:step>
+		<batch:step id="trackSkipsStep">
+			<batch:tasklet ref="trackSkipsTasklet" />			
+		</batch:step>
+		<batch:step id="trackIncorrectFileStep">
+			<batch:tasklet ref="trackIncorrectFileTasklet" />			
+		</batch:step>
+	</batch:job>
+	
+	<bean id="trackIncorrectFileTasklet" class="org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter"
+		scope="step">
+		<property name="targetObject" ref="trackingService" />
+		<property name="targetMethod" value="trackIncorrectFile" />
+		<property name="arguments" value="${jobParameters[importFile]}" />
+	</bean>
+	
+	<bean id="trackSkipsTasklet" class="org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter"
+		scope="step">
+		<property name="targetObject" ref="trackingService" />
+		<property name="targetMethod" value="trackFileWithSkips" />
+		<property name="arguments" value="${jobParameters[importFile]}" />
+	</bean>
+	
+	<bean id="trackingService" class="com.zenika.workshop.springbatch.TrackingService">
+		<constructor-arg ref="dataSource" />
+	</bean>
+	
+	<bean id="digestTasklet" class="com.zenika.workshop.springbatch.DigestTasklet"
+		scope="step">
+		<property name="importFile" value="#{jobParameters[importFile]}" /> 
+	</bean>
+	
+	<bean id="reader" class="org.springframework.batch.item.file.FlatFileItemReader" scope="step">
+		<property name="lineMapper">
+			<bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+				<property name="lineTokenizer">
+					<bean class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+						<property name="names" value="firstname,lastname,birth" />
+					</bean>
+				</property>
+				<property name="fieldSetMapper">
+					<bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+				</property>
+			</bean>
+		</property>
+		<property name="resource" value="file:#{jobParameters[importFile]}" />
+	</bean>
+	
+	<bean id="writer" class="com.zenika.workshop.springbatch.JdbcContactItemWriter">
+		<constructor-arg ref="dataSource" />
+	</bean>
+
+	<jdbc:embedded-database type="H2" id="dataSource">
+		<jdbc:script location="classpath:/create-tables.sql" />
+	</jdbc:embedded-database>
+
+	<bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<bean id="jobRepository" class="org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean" />
+
+	<bean id="jobLauncher" class="org.springframework.batch.core.launch.support.SimpleJobLauncher">
+		<property name="jobRepository" ref="jobRepository" />
+	</bean>
+	
+	<bean class="org.springframework.jdbc.core.JdbcTemplate">
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+</beans>

@@ -1,0 +1,127 @@
+\section{Complex flow}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: my job has a complex flow of steps, how can Spring Batch deal with it?
+  \item Solution: use the step flow attributes and tags, as well as \code{StepExecutionListener}s.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{The \code{next} attribute for a linear flow}
+ \lstset{language=XML}
+\begin{lstlisting}
+<batch:job id="complexFlowJob">
+  <batch:step id="digestStep" next="%\hili{flatFileReadingStep}%">
+    <batch:tasklet ref="digestTasklet" />
+  </batch:step>		
+  <batch:step id="%\hili{flatFileReadingStep}%">
+    <batch:tasklet>
+      <batch:chunk reader="reader" writer="writer" commit-interval="3" />
+    </batch:tasklet>		
+  </batch:step>	
+</batch:job>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{There's also a \code{next} tag non-linear flows}
+ \lstset{language=XML}
+\begin{lstlisting}
+<batch:job id="complexFlowJob">
+  <batch:step id="digestStep">
+    <batch:tasklet ref="digestTasklet" />
+    <batch:next on="COMPLETED" to="%\hili{flatFileReadingStep}%"/>
+    <batch:next on="FAILED" to="%\hili{trackIncorrectFileStep}%"/>
+  </batch:step>
+  <batch:step id="%\hili{flatFileReadingStep}%">
+    <batch:tasklet>
+      <batch:chunk reader="reader" writer="writer" commit-interval="3" />
+    </batch:tasklet>
+  </batch:step>
+  <batch:step id="%\hili{trackIncorrectFileStep}%">
+    <batch:tasklet ref="trackIncorrectFileTasklet" />
+  </batch:step>
+</batch:job>
+\end{lstlisting}
+\begin{itemize}
+ \item NB: there are also the \code{end}, \code{fail}, and \code{stop} tags
+\end{itemize}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{But if I have more complex flows?}
+ \begin{itemize}
+  \item The \code{next} attribute decision is based on the exit code
+  \item You can use your own exit codes
+  \item A \code{StepExecutionListener} can modify the exit code of a step execution
+ \end{itemize}
+
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Modifying the exit code of a step execution}
+ \lstset{language=Java}
+ \begin{lstlisting}
+package com.zenika.workshop.springbatch;
+
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
+
+public class SkipsListener implements StepExecutionListener {
+
+  @Override
+  public void beforeStep(StepExecution stepExecution) { }
+
+  @Override
+  public ExitStatus afterStep(StepExecution stepExecution) {
+    String exitCode = stepExecution.getExitStatus().getExitCode();
+    if (!exitCode.equals(ExitStatus.FAILED.getExitCode()) && 
+              stepExecution.getSkipCount() > 0) {
+      return new ExitStatus("COMPLETED WITH SKIPS");
+    } else {
+      return null;
+    }
+  }
+}
+\end{lstlisting}
+
+\end{frame}
+
+
+\begin{frame}[fragile]
+ \frametitle{Plugging the \code{SkipsListener}}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<step id="flatFileReadingStep">
+  <tasklet>
+    <chunk reader="reader" writer="writer" 
+           commit-interval="3" skip-limit="10">
+      <skippable-exception-classes>
+        <include 
+        class="org.springframework.batch.item.file.FlatFileParseException"/>
+      </skippable-exception-classes>
+    </chunk>
+  </tasklet>		
+  <end on="COMPLETED"/>	
+  %\hili{\textless next on="COMPLETED WITH SKIPS" to="trackSkipsStep"/\textgreater}%
+  <listeners>
+    <listener>
+      %\hili{\textless beans:bean class="com.zenika.workshop.springbatch.SkipsListener" /\textgreater}%
+    </listener>
+  </listeners>
+</step>
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}
+  \item The \code{JobExecutionDecider} and the \code{decision} tag
+  \item The \code{stop}, \code{fail}, and \code{end} tags
+ \end{itemize}
+\end{frame}
