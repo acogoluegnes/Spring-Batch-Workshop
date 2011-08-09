@@ -1,0 +1,103 @@
+\section{Atomic processing}
+
+\begin{frame}
+ \begin{itemize}
+  \item Problem: I want to process an input file in an all-or-nothing manner.
+  \item Solution: Don't do it. Atomic processing isn't batch processing! Anyway, if you really need 
+  an atomic processing, use a custom \code{CompletionPolicy}.
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Why atomic processing is a bad idea?}
+ \begin{itemize}
+  \item You loose the benefits of chunk-oriented processing
+  \begin{itemize}
+    \item speed, small memory footprint, etc.
+  \end{itemize}
+  \item On a rollback, you loose everything (that's perhaps the point!)
+  \item The rollback can take a long time (several hours)
+  \item It all depends on the amount of data and on the processing
+ \end{itemize}
+\end{frame}
+
+\begin{frame}
+ \frametitle{I really need an atomic processing}
+ \begin{itemize}
+  \item Rollback yourself, with compensating transactions  
+  \item Use a transaction rollback
+  \begin{itemize}
+    \item It's only a never ending chunk!
+  \end{itemize}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Quick and dirty, large commit interval}
+ \begin{itemize}
+  \item Set the commit interval to a very large value  
+  \item You should never have more items!
+ \end{itemize}
+ \lstset{language=XML}
+\begin{lstlisting}
+<batch:chunk reader="reader" writer="writer" commit-interval="1000000"/>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Use a never-ending \code{CompletionPolicy}}
+ \begin{itemize}
+  \item Spring Batch uses a \code{CompletionPolicy} to know if a chunk is complete
+ \end{itemize}
+ \lstset{language=Java}
+\begin{lstlisting}
+package org.springframework.batch.repeat;
+
+public interface CompletionPolicy {
+
+  boolean isComplete(RepeatContext context, RepeatStatus result);
+
+  boolean isComplete(RepeatContext context);
+
+  RepeatContext start(RepeatContext parent);
+
+  void update(RepeatContext context);
+
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Plugging in the \code{CompletionPolicy}}
+ \lstset{language=XML}
+\begin{lstlisting}
+<batch:job id="atomicProcessingJob">
+  <batch:step id="atomicProcessingStep">
+    <batch:tasklet>
+      <batch:chunk reader="reader" writer="writer" 
+                   %\hili{chunk-completion-policy="atomicCompletionPolicy"}% />
+    </batch:tasklet>
+  </batch:step>
+</batch:job>
+\end{lstlisting}
+\begin{itemize}
+  \item NB: remove the \code{commit-interval} attribute when using a \code{CompletionStrategy}
+ \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Which \code{CompletionPolicy} for my atomic processing?}
+ \lstset{language=XML}
+\begin{lstlisting}
+<bean id="atomicCompletionPolicy"
+      class="o.s.b.repeat.policy.DefaultResultCompletionPolicy" />
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}
+ \frametitle{Going further...}
+ \begin{itemize}  
+  \item Flow in a job
+  \item \code{SkipPolicy}, \code{RetryPolicy}
+ \end{itemize}
+\end{frame}

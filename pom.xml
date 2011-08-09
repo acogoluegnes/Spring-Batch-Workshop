@@ -214,5 +214,9 @@
 		<module>file-dropping-launching-solution</module>
 		<module>database-reading-partitioning-start</module>
 		<module>database-reading-partitioning-solution</module>
+		<module>complex-flow-start</module>
+		<module>complex-flow-solution</module>
+		<module>atomic-processing-start</module>
+		<module>atomic-processing-solution</module>
 	</modules>
 </project>
