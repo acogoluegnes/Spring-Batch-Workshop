@@ -8,11 +8,11 @@
 		http://www.springframework.org/schema/batch http://www.springframework.org/schema/batch/spring-batch-2.1.xsd">
 
 	<batch:job id="complexFlowJob">
-		<!-- TODO xx add a digestStep that calls the digestTasklet -->
+		<!-- TODO 15 add a digestStep that calls the digestTasklet -->
 		<!-- check out what the DigestTasklet class does -->
 		
-		<!-- TODO xx plug the DigestListener on the digestStep -->
-		<!-- TODO xx configure the flow after the digestStep -->
+		<!-- TODO 16 plug the DigestListener on the digestStep -->
+		<!-- TODO 17 configure the flow after the digestStep -->
 		<!-- if COMPLETED, go to flatFileReadingStep, -->
 		<!-- if INCORRECT FILE, go to trackIncorrectFileStep (step to be configured) -->
 		
@@ -25,19 +25,19 @@
 					</batch:skippable-exception-classes>
 				</batch:chunk>
 			</batch:tasklet>		
-			<!-- TODO xx configure the flow -->
+			<!-- TODO 03 configure the flow -->
 			<!-- hint: use the next tag in case of skips and the end tag if the step completed normally -->	
 			<!-- in case of SKIPS, the trackShipsTasklet should be executed -->		
-			<!-- TODO xx plug the SkipsListener on the step -->
+			<!-- TODO 02 plug the SkipsListener on the step -->
 			
 		</batch:step>
 		<batch:step id="trackSkipsStep">
 			<batch:tasklet ref="trackSkipsTasklet" />			
 		</batch:step>
-		<!-- TODO xx add trackIncorrectFileStep that calls the trackIncorrectFileTasklet -->
+		<!-- TODO 18 add trackIncorrectFileStep that calls the trackIncorrectFileTasklet -->
 	</batch:job>
 	
-	<!-- TODO xx checks what the trackSkipsTasklet does  -->
+	<!-- TODO 04 checks what the trackSkipsTasklet does  -->
 	<!-- it calls a tracking service (it uses an tasklet adapter provided by Spring Batch to do so) -->
 	<!-- check what the TrackingService does -->
 	<bean id="trackSkipsTasklet" class="org.springframework.batch.core.step.tasklet.MethodInvokingTaskletAdapter"
