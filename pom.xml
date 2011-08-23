@@ -145,9 +145,9 @@
 
 	<properties>
 		<spring.batch.version>2.1.8.RELEASE</spring.batch.version>
-		<spring.version>3.0.5.RELEASE</spring.version>
+		<spring.version>3.0.6.RELEASE</spring.version>
 		<slf4j.version>1.6.1</slf4j.version>
-		<h2.version>1.3.156</h2.version>
+		<h2.version>1.3.158</h2.version>
 		<mockito.version>1.8.5</mockito.version>
 		<logback.version>0.9.29</logback.version>
 		<junit.version>4.8.2</junit.version>
@@ -172,7 +172,10 @@
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-				</configuration>
+          				<fork>true</fork>
+					<meminitial>128m</meminitial>
+				        <maxmem>512m</maxmem>
+       				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
