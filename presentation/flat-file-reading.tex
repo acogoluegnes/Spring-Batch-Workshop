@@ -25,13 +25,13 @@
 
 \begin{frame}[fragile]
  \frametitle{The usual suspects}
- \begin{lstlisting}
+ \begin{textcode}
 Susy,Hauerstock,2010-03-04
 De Anna,Raghunath,2010-03-04
 Kiam,Whitehurst,2010-03-04
 Alecia,Van Holst,2010-03-04
 Hing,Senecal,2010-03-04
-\end{lstlisting}
+\end{textcode}
 
 \begin{center}
 \begin{picture}(0,0)
@@ -39,8 +39,7 @@ Hing,Senecal,2010-03-04
 \end{picture}
 \end{center}
 
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public class Contact {
 
   private Long id;
@@ -49,7 +48,7 @@ public class Contact {
   
   (...)
 }
-\end{lstlisting}
+\end{javacode}
 
 \end{frame}
 
@@ -66,8 +65,7 @@ public class Contact {
 \begin{frame}[fragile]
  \frametitle{The \code{FlatFileItemReader} configuration}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="reader"
       class="org.springframework.batch.item.file.FlatFileItemReader">
   <property name="lineMapper">
@@ -84,15 +82,14 @@ public class Contact {
   </property>
   <property name="resource" value="classpath:contacts.txt" />
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 
 \end{frame}
 
 \begin{frame}[fragile]
  \frametitle{The \code{FlatFileItemReader} declaration}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="reader"
       class="org.springframework.batch.item.file.FlatFileItemReader">
 
@@ -109,15 +106,14 @@ public class Contact {
 
 
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 
 \end{frame}
 
 \begin{frame}[fragile]
  \frametitle{How to tokenize a line}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="reader"
       class="org.springframework.batch.item.file.FlatFileItemReader">
   <property name="lineMapper">
@@ -134,15 +130,14 @@ public class Contact {
   </property>
 
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}[fragile]
  \frametitle{How to map the line with a Java object}
 
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="reader"
       class="org.springframework.batch.item.file.FlatFileItemReader">
   <property name="lineMapper">
@@ -159,15 +154,14 @@ public class Contact {
   </property>
 
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 
 \end{frame}
 
 \begin{frame}[fragile]
  \frametitle{Where to find the file to read}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="reader"
       class="org.springframework.batch.item.file.FlatFileItemReader">
 
@@ -184,15 +178,14 @@ public class Contact {
 
   <property name="resource" value="classpath:contacts.txt" />
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 
 \end{frame}
 
 \begin{frame}[fragile]
  \frametitle{The \code{FlatFileItemReader} configuration}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="reader"
       class="org.springframework.batch.item.file.FlatFileItemReader">
   <property name="lineMapper">
@@ -209,7 +202,7 @@ public class Contact {
   </property>
   <property name="resource" value="classpath:contacts.txt" />
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 
 \end{frame}
 
@@ -225,8 +218,7 @@ public class Contact {
 \begin{frame}[fragile]
  \frametitle{Custom \code{FieldSetMapper} implementation}
 
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 package com.zenika.workshop.springbatch;
 
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
@@ -244,7 +236,7 @@ public class ContactFieldSetMapper implements FieldSetMapper<Contact> {
     );
   }
 }
-\end{lstlisting}
+\end{javacode}
 
 \end{frame}
 
