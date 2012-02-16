@@ -44,15 +44,14 @@
  \item Reading ends when \code{read()} returns \code{null}
 \end{itemize}
 
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public interface ItemReader<T> {
 
   T read() throws Exception, UnexpectedInputException, 
                   ParseException, NonTransientResourceException;
 
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -62,14 +61,13 @@ public interface ItemReader<T> {
  \item Optional
 \end{itemize}
 
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public interface ItemProcessor<I, O> {
 
   O process(I item) throws Exception;
 
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -79,14 +77,13 @@ public interface ItemProcessor<I, O> {
  \item Allows for batch update (more efficient)
 \end{itemize}
 
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public interface ItemWriter<T> {
 
   void write(List<? extends T> items) throws Exception;
 
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}
@@ -98,8 +95,7 @@ public interface ItemWriter<T> {
 
 \begin{frame}[fragile]
 \frametitle{The \code{ItemReader}}
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public class StringItemReader implements ItemReader<String> {
 
   private List<String> list;
@@ -116,13 +112,12 @@ public class StringItemReader implements ItemReader<String> {
     return !list.isEmpty() ? list.remove(0) : null;
   }
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{The \code{ItemProcessor}}
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public class StringItemProcessor implements ItemProcessor<String, String> {
 
   @Override
@@ -131,13 +126,12 @@ public class StringItemProcessor implements ItemProcessor<String, String> {
   }
 
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{The \code{ItemWriter}}
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public class StringItemWriter implements ItemWriter<String> {
 
   private static final Logger LOGGER =
@@ -151,13 +145,12 @@ public class StringItemWriter implements ItemWriter<String> {
   }
 
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Configuring the job}
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{javacode}
 <batch:job id="chunkProcessingJob">
   <batch:step id="chunkProcessingStep">
     <batch:tasklet>
@@ -174,7 +167,7 @@ public class StringItemWriter implements ItemWriter<String> {
       class="com.zenika.workshop.springbatch.StringItemProcessor" />
 
 <bean id="writer" class="com.zenika.workshop.springbatch.StringItemWriter" />
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}
