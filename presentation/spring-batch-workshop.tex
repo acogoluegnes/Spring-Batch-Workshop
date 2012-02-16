@@ -6,13 +6,15 @@
 \usepackage{graphicx}
 \usepackage{array,multirow}
 \usepackage{colortbl}
-
+\usepackage{minted}
 \usetheme{Montpellier}
-
 % code in slides
 \newcommand{\code}[1]{\texttt{#1}}
 % highlight code in listings
 \newcommand{\hili}[1]{\textbf{\color{red} #1}}
+% code listings
+\newminted{java}{fontsize=\scriptsize,frame=single}
+\newminted{xml}{fontsize=\scriptsize,frame=single}
 
 \lstset{
  basicstyle=\tiny,

@@ -18,8 +18,7 @@
 
 \begin{frame}[fragile]
 \frametitle{The Hello World \code{Tasklet}}
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public class HelloWorldTasklet implements Tasklet {
 
   @Override
@@ -31,13 +30,12 @@ public class HelloWorldTasklet implements Tasklet {
   }
 
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{The configuration of the Hello World job}
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <batch:job id="helloWorldJob">
   <batch:step id="helloWorldStep">
     <batch:tasklet>
@@ -45,7 +43,7 @@ public class HelloWorldTasklet implements Tasklet {
     </batch:tasklet>
   </batch:step>
 </batch:job>
-\end{lstlisting}
+\end{xmlcode}
 
 \begin{itemize}
  \item Notice the \code{batch} namespace
@@ -59,8 +57,7 @@ public class HelloWorldTasklet implements Tasklet {
  \item Let's use the typical test configuration
 \end{itemize}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="transactionManager"
       class="o.s.b.support.transaction.ResourcelessTransactionManager" />
 
@@ -71,14 +68,13 @@ public class HelloWorldTasklet implements Tasklet {
       class="o.s.b.core.launch.support.SimpleJobLauncher">
   <property name="jobRepository" ref="jobRepository" />
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Running the test in a JUnit test}
 
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("/hello-world-job.xml")
 public class HelloWorldJobTest {
@@ -94,5 +90,5 @@ public class HelloWorldJobTest {
     assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
   }
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
