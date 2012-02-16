@@ -73,8 +73,132 @@ public class Contact {
   <property name="lineMapper">
     <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
       <property name="lineTokenizer">
-        <bean 
-  class="org.springframework.batch.item.file.transform.DelimitedLineTokenizer">
+        <bean class="o.s.b.item.file.transform.DelimitedLineTokenizer">
+          <property name="names" value="firstname,lastname,birth" />
+        </bean>
+      </property>
+      <property name="fieldSetMapper">
+        <bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+      </property>
+    </bean>
+  </property>
+  <property name="resource" value="classpath:contacts.txt" />
+</bean>
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{The \code{FlatFileItemReader} declaration}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="reader"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+
+
+
+
+
+
+
+
+
+
+
+
+
+</bean>
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{How to tokenize a line}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="reader"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper">
+    <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+      <property name="lineTokenizer">
+        <bean class="o.s.b.item.file.transform.DelimitedLineTokenizer">
+          <property name="names" value="firstname,lastname,birth" />
+        </bean>
+      </property>
+
+
+
+    </bean>
+  </property>
+
+</bean>
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{How to map the line with a Java object}
+
+
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="reader"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper">
+    <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+
+
+
+
+
+      <property name="fieldSetMapper">
+        <bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+      </property>
+    </bean>
+  </property>
+
+</bean>
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{Where to find the file to read}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="reader"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+
+
+
+
+
+
+
+
+
+
+
+
+  <property name="resource" value="classpath:contacts.txt" />
+</bean>
+\end{lstlisting}
+
+\end{frame}
+
+\begin{frame}[fragile]
+ \frametitle{The \code{FlatFileItemReader} configuration}
+
+\lstset{language=XML}
+\begin{lstlisting}
+<bean id="reader"
+      class="org.springframework.batch.item.file.FlatFileItemReader">
+  <property name="lineMapper">
+    <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+      <property name="lineTokenizer">
+        <bean class="o.s.b.item.file.transform.DelimitedLineTokenizer">
           <property name="names" value="firstname,lastname,birth" />
         </bean>
       </property>
