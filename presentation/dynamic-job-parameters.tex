@@ -8,21 +8,24 @@
 \end{frame}
 
 \begin{frame}[fragile]
- \frametitle{Use case: providing a input file dynamically to the item reader}
- \begin{lstlisting}[language=Java]
+ \frametitle{Dynamically providing an input file to the item reader}
+
+ Launching the job with an \code{input.file} parameter:
+ \begin{javacode}
 JobParameters jobParameters = new JobParametersBuilder()
-  .addString(%\hili{"input.file"}%, "file:./input/contacts-01.txt")
+  .addString("input.file", "file:./input/contacts-01.txt")
   .toJobParameters();
 JobExecution execution = jobLauncher.run(job, jobParameters);
- \end{lstlisting}
- \begin{lstlisting}[language=XML]
+ \end{javacode}
+ Referring to the \code{input.file} parameter in the configuration:
+ \begin{xmlcode}
 <bean id="reader"
       class="org.springframework.batch.item.file.FlatFileItemReader"
-      %\hili{scope="step"}%>
-  <property name="resource %\hili{value="\#\{jobParameters['input.file']\}}%" />
+      scope="step">
+  <property name="resource" value="#{jobParameters['input.file']}" />
   (...)
 </bean>
- \end{lstlisting} 
+ \end{xmlcode} 
 \end{frame}
 
 \begin{frame}

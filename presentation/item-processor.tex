@@ -23,14 +23,13 @@
 
 \begin{frame}[fragile]
 \frametitle{The \code{ItemProcessor} interface}
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public interface ItemProcessor<I, O> {
 
   O process(I item) throws Exception;
 
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -39,8 +38,7 @@ public interface ItemProcessor<I, O> {
  \item An \code{ItemProcessor} usually delegates to existing business code
 \end{itemize}
 
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public class ContactItemProcessor implements
              ItemProcessor<Contact, RegistrationConfirmation> {
 
@@ -53,17 +51,16 @@ public class ContactItemProcessor implements
   }
 
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Registering the \code{ItemProcessor}}
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <batch:job id="itemProcessorJob">
   <batch:step id="itemProcessorStep">
     <batch:tasklet>
-      <batch:chunk reader="reader" %\hili{processor="processor"}% 
+      <batch:chunk reader="reader" processor="processor" 
                    writer="writer" commit-interval="3"/>
     </batch:tasklet>
   </batch:step>
@@ -76,7 +73,7 @@ public class ContactItemProcessor implements
       class="com.zenika.workshop.springbatch.ContactItemProcessor">
   <property name="registrationService" ref="registrationService" />
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}

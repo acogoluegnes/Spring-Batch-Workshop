@@ -9,7 +9,7 @@
 
 \begin{frame}[fragile]
  \frametitle{A class to launch the job}
- \begin{lstlisting}[language=Java]
+ \begin{javacode}
 public class ImportLauncher {
 
   public void launch() throws Exception {
@@ -21,12 +21,12 @@ public class ImportLauncher {
     );
   }
 }
- \end{lstlisting}
+ \end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
  \frametitle{Spring scheduling configuration}
- \begin{lstlisting}[language=XML]
+ \begin{xmlcode}
 <bean id="importLauncher"
       class="com.zenika.workshop.springbatch.ImportLauncher" />
 
@@ -34,7 +34,7 @@ public class ImportLauncher {
   <task:scheduled ref="importLauncher" method="launch" 
                   fixed-delay="1000" />
 </task:scheduled-tasks>
- \end{lstlisting}
+ \end{xmlcode}
  \begin{itemize}
   \item \code{cron} attribute available
  \end{itemize}

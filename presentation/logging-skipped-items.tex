@@ -18,8 +18,7 @@
 
 \begin{frame}[fragile]
  \frametitle{Writing the \code{SkipListener}}
- \lstset{language=Java}
- \begin{lstlisting}
+ \begin{javacode}
 package com.zenika.workshop.springbatch;
 
 import org.slf4j.Logger;
@@ -37,15 +36,14 @@ public class Slf4jSkipListener<T,S> extends SkipListenerSupport<T, S> {
   }
 
 }  
- \end{lstlisting}
+ \end{javacode}
 
 \end{frame}
 
 
 \begin{frame}[fragile]
 \frametitle{Registering the \code{SkipListener}}
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <batch:job id="loggingSkippedItemsJob">
   <batch:step id="loggingSkippedItemsStep">
     <batch:tasklet>
@@ -57,14 +55,14 @@ public class Slf4jSkipListener<T,S> extends SkipListenerSupport<T, S> {
         </batch:skippable-exception-classes>
       </batch:chunk>
       <batch:listeners>
-        %\hili{\textless batch:listener ref="skipListener" /\textgreater}%
+        <batch:listener ref="skipListener" />
       </batch:listeners>
     </batch:tasklet>
   </batch:step>
 </batch:job>
 
-%\hili{\textless bean id="skipListener" class="com.zenika.workshop.springbatch.Slf4jSkipListener" /\textgreater}%
-\end{lstlisting}
+<bean id="skipListener" class="com.zenika.workshop.springbatch.Slf4jSkipListener" />
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}
