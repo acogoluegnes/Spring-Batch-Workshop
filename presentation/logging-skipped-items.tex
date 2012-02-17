@@ -51,7 +51,7 @@ public class Slf4jSkipListener<T,S> extends SkipListenerSupport<T, S> {
                    skip-limit="10">
         <batch:skippable-exception-classes>
           <batch:include
-           class="org.springframework.batch.item.file.FlatFileParseException"/>
+           class="o.s.b.item.file.FlatFileParseException"/>
         </batch:skippable-exception-classes>
       </batch:chunk>
       <batch:listeners>
@@ -61,7 +61,7 @@ public class Slf4jSkipListener<T,S> extends SkipListenerSupport<T, S> {
   </batch:step>
 </batch:job>
 
-<bean id="skipListener" class="com.zenika.workshop.springbatch.Slf4jSkipListener" />
+<bean id="skipListener" class="c.z.w.springbatch.Slf4jSkipListener" />
 \end{xmlcode}
 \end{frame}
 

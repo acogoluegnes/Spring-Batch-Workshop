@@ -108,7 +108,7 @@ public class StringItemReader implements ItemReader<String> {
 
   @Override
   public String read() throws Exception, UnexpectedInputException,
-                         ParseException, NonTransientResourceException {
+                       ParseException, NonTransientResourceException {
     return !list.isEmpty() ? list.remove(0) : null;
   }
 }
@@ -118,7 +118,8 @@ public class StringItemReader implements ItemReader<String> {
 \begin{frame}[fragile]
 \frametitle{The \code{ItemProcessor}}
 \begin{javacode}
-public class StringItemProcessor implements ItemProcessor<String, String> {
+public class StringItemProcessor 
+       implements ItemProcessor<String, String> {
 
   @Override
   public String process(String item) throws Exception {
@@ -150,24 +151,26 @@ public class StringItemWriter implements ItemWriter<String> {
 
 \begin{frame}[fragile]
 \frametitle{Configuring the job}
-\begin{javacode}
+\begin{xmlcode}
 <batch:job id="chunkProcessingJob">
   <batch:step id="chunkProcessingStep">
     <batch:tasklet>
-      <batch:chunk reader="reader" processor="processor" writer="writer"
-                   commit-interval="3"
+      <batch:chunk reader="reader" processor="processor" 
+                   writer="writer" commit-interval="3"
       />
     </batch:tasklet>
   </batch:step>
 </batch:job>
 
-<bean id="reader" class="com.zenika.workshop.springbatch.StringItemReader" />
+<bean id="reader" 
+      class="com.zenika.workshop.springbatch.StringItemReader" />
 
 <bean id="processor" 
       class="com.zenika.workshop.springbatch.StringItemProcessor" />
 
-<bean id="writer" class="com.zenika.workshop.springbatch.StringItemWriter" />
-\end{javacode}
+<bean id="writer" 
+      class="com.zenika.workshop.springbatch.StringItemWriter" />
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}

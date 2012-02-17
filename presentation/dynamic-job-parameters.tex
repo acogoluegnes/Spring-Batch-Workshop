@@ -10,14 +10,18 @@
 \begin{frame}[fragile]
  \frametitle{Dynamically providing an input file to the item reader}
 
- Launching the job with an \code{input.file} parameter:
+\begin{itemize}
+ \item Launching the job with an \code{input.file} parameter:
+\end{itemize}
  \begin{javacode}
 JobParameters jobParameters = new JobParametersBuilder()
   .addString("input.file", "file:./input/contacts-01.txt")
   .toJobParameters();
 JobExecution execution = jobLauncher.run(job, jobParameters);
  \end{javacode}
- Referring to the \code{input.file} parameter in the configuration:
+\begin{itemize}
+ \item Referring to the \code{input.file} parameter in the configuration:
+\end{itemize}
  \begin{xmlcode}
 <bean id="reader"
       class="org.springframework.batch.item.file.FlatFileItemReader"

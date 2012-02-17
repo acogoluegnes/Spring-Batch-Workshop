@@ -14,11 +14,11 @@
 \lstset{language=XML}
 \begin{xmlcode}
 <bean id="reader"
-      class="org.springframework.batch.item.database.JdbcPagingItemReader">
+      class="o.s.b.item.database.JdbcPagingItemReader">
   <property name="dataSource" ref="dataSource" />
   <property name="pageSize" value="10" />
   <property name="queryProvider">
-    <bean class="o.s.b.item.database.support.SqlPagingQueryProviderFactoryBean">
+    <bean class="o.s.b.i.d.support.SqlPagingQueryProviderFactoryBean">
       <property name="dataSource" ref="dataSource" />
       <property name="selectClause" 
                 value="select id,firstname,lastname,birth" />

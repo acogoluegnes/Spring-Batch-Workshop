@@ -39,7 +39,7 @@ public class HelloWorldTasklet implements Tasklet {
 <batch:job id="helloWorldJob">
   <batch:step id="helloWorldStep">
     <batch:tasklet>
-      <bean class="com.zenika.workshop.springbatch.HelloWorldTasklet" />
+      <bean class="c.z.workshop.springbatch.HelloWorldTasklet" />
     </batch:tasklet>
   </batch:step>
 </batch:job>
@@ -59,10 +59,12 @@ public class HelloWorldTasklet implements Tasklet {
 
 \begin{xmlcode}
 <bean id="transactionManager"
-      class="o.s.b.support.transaction.ResourcelessTransactionManager" />
+      class="o.s.b.support.transaction.ResourcelessTransactionManager"
+      />
 
 <bean id="jobRepository"   
-      class="o.s.b.core.repository.support.MapJobRepositoryFactoryBean" />
+      class="o.s.b.core.repository.support.MapJobRepositoryFactoryBean" 
+      />
 
 <bean id="jobLauncher"
       class="o.s.b.core.launch.support.SimpleJobLauncher">

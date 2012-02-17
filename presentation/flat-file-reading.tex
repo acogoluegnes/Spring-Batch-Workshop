@@ -67,16 +67,16 @@ public class Contact {
 
 \begin{xmlcode}
 <bean id="reader"
-      class="org.springframework.batch.item.file.FlatFileItemReader">
+      class="o.s.b.item.file.FlatFileItemReader">
   <property name="lineMapper">
-    <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean class="o.s.b.item.file.mapping.DefaultLineMapper">
       <property name="lineTokenizer">
         <bean class="o.s.b.item.file.transform.DelimitedLineTokenizer">
           <property name="names" value="firstname,lastname,birth" />
         </bean>
       </property>
       <property name="fieldSetMapper">
-        <bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+        <bean class="c.z.workshop.springbatch.ContactFieldSetMapper" />
       </property>
     </bean>
   </property>
@@ -91,7 +91,7 @@ public class Contact {
 
 \begin{xmlcode}
 <bean id="reader"
-      class="org.springframework.batch.item.file.FlatFileItemReader">
+      class="o.s.b.item.file.FlatFileItemReader">
 
 
 
@@ -115,9 +115,9 @@ public class Contact {
 
 \begin{xmlcode}
 <bean id="reader"
-      class="org.springframework.batch.item.file.FlatFileItemReader">
+      class="o.s.b.item.file.FlatFileItemReader">
   <property name="lineMapper">
-    <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean class="o.s.b.item.file.mapping.DefaultLineMapper">
       <property name="lineTokenizer">
         <bean class="o.s.b.item.file.transform.DelimitedLineTokenizer">
           <property name="names" value="firstname,lastname,birth" />
@@ -139,16 +139,16 @@ public class Contact {
 
 \begin{xmlcode}
 <bean id="reader"
-      class="org.springframework.batch.item.file.FlatFileItemReader">
+      class="o.s.b.item.file.FlatFileItemReader">
   <property name="lineMapper">
-    <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean class="o.s.b.item.file.mapping.DefaultLineMapper">
 
 
 
 
 
       <property name="fieldSetMapper">
-        <bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+        <bean class="c.z.workshop.springbatch.ContactFieldSetMapper" />
       </property>
     </bean>
   </property>
@@ -163,7 +163,7 @@ public class Contact {
 
 \begin{xmlcode}
 <bean id="reader"
-      class="org.springframework.batch.item.file.FlatFileItemReader">
+      class="o.s.b.item.file.FlatFileItemReader">
 
 
 
@@ -187,16 +187,16 @@ public class Contact {
 
 \begin{xmlcode}
 <bean id="reader"
-      class="org.springframework.batch.item.file.FlatFileItemReader">
+      class="o.s.b.item.file.FlatFileItemReader">
   <property name="lineMapper">
-    <bean class="org.springframework.batch.item.file.mapping.DefaultLineMapper">
+    <bean class="o.s.b.item.file.mapping.DefaultLineMapper">
       <property name="lineTokenizer">
         <bean class="o.s.b.item.file.transform.DelimitedLineTokenizer">
           <property name="names" value="firstname,lastname,birth" />
         </bean>
       </property>
       <property name="fieldSetMapper">
-        <bean class="com.zenika.workshop.springbatch.ContactFieldSetMapper" />
+        <bean class="c.z.workshop.springbatch.ContactFieldSetMapper" />
       </property>
     </bean>
   </property>
