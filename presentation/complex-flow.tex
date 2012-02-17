@@ -9,41 +9,41 @@
 
 \begin{frame}[fragile]
  \frametitle{The \code{next} attribute for a linear flow}
- \lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <batch:job id="complexFlowJob">
-  <batch:step id="digestStep" next="%\hili{flatFileReadingStep}%">
+  <batch:step id="digestStep" next="flatFileReadingStep">
     <batch:tasklet ref="digestTasklet" />
   </batch:step>		
-  <batch:step id="%\hili{flatFileReadingStep}%">
+  <batch:step id="flatFileReadingStep">
     <batch:tasklet>
-      <batch:chunk reader="reader" writer="writer" commit-interval="3" />
+      <batch:chunk reader="reader" writer="writer" 
+                   commit-interval="3" />
     </batch:tasklet>		
   </batch:step>	
 </batch:job>
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}[fragile]
  \frametitle{There's also a \code{next} tag non-linear flows}
- \lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <batch:job id="complexFlowJob">
   <batch:step id="digestStep">
     <batch:tasklet ref="digestTasklet" />
-    <batch:next on="COMPLETED" to="%\hili{flatFileReadingStep}%"/>
-    <batch:next on="FAILED" to="%\hili{trackIncorrectFileStep}%"/>
+    <batch:next on="COMPLETED" to="flatFileReadingStep"/>
+    <batch:next on="FAILED" to="trackIncorrectFileStep"/>
   </batch:step>
-  <batch:step id="%\hili{flatFileReadingStep}%">
+  <batch:step id="flatFileReadingStep">
     <batch:tasklet>
-      <batch:chunk reader="reader" writer="writer" commit-interval="3" />
+      <batch:chunk reader="reader" writer="writer" 
+                   commit-interval="3" />
     </batch:tasklet>
   </batch:step>
-  <batch:step id="%\hili{trackIncorrectFileStep}%">
+  <batch:step id="trackIncorrectFileStep">
     <batch:tasklet ref="trackIncorrectFileTasklet" />
   </batch:step>
 </batch:job>
-\end{lstlisting}
+\end{xmlcode}
 \begin{itemize}
  \item NB: there are also the \code{end}, \code{fail}, and \code{stop} tags
 \end{itemize}
@@ -62,8 +62,7 @@
 
 \begin{frame}[fragile]
  \frametitle{Modifying the exit code of a step execution}
- \lstset{language=Java}
- \begin{lstlisting}
+ \begin{javacode*}{fontsize=\tiny}
 package com.zenika.workshop.springbatch;
 
 import org.springframework.batch.core.ExitStatus;
@@ -86,7 +85,7 @@ public class SkipsListener implements StepExecutionListener {
     }
   }
 }
-\end{lstlisting}
+\end{javacode*}
 
 \end{frame}
 
@@ -94,27 +93,26 @@ public class SkipsListener implements StepExecutionListener {
 \begin{frame}[fragile]
  \frametitle{Plugging the \code{SkipsListener}}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <step id="flatFileReadingStep">
   <tasklet>
     <chunk reader="reader" writer="writer" 
            commit-interval="3" skip-limit="10">
       <skippable-exception-classes>
         <include 
-        class="org.springframework.batch.item.file.FlatFileParseException"/>
+        class="o.s.b.item.file.FlatFileParseException"/>
       </skippable-exception-classes>
     </chunk>
   </tasklet>		
   <end on="COMPLETED"/>	
-  %\hili{\textless next on="COMPLETED WITH SKIPS" to="trackSkipsStep"/\textgreater}%
+    <next on="COMPLETED WITH SKIPS" to="trackSkipsStep"/>
   <listeners>
     <listener>
-      %\hili{\textless beans:bean class="com.zenika.workshop.springbatch.SkipsListener" /\textgreater}%
+      <beans:bean class="c.z.workshop.springbatch.SkipsListener" />
     </listener>
   </listeners>
 </step>
-\end{lstlisting}
+\end{xmlcode}
 
 \end{frame}
 

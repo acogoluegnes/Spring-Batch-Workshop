@@ -1,28 +1,20 @@
 \documentclass{beamer}
 \usepackage[utf8]{inputenc}
-\usepackage{listings}
 \usepackage{color}
 \usepackage{relsize}
 \usepackage{graphicx}
 \usepackage{array,multirow}
 \usepackage{colortbl}
-
+\usepackage{minted}
 \usetheme{Montpellier}
-
 % code in slides
 \newcommand{\code}[1]{\texttt{#1}}
 % highlight code in listings
 \newcommand{\hili}[1]{\textbf{\color{red} #1}}
-
-\lstset{
- basicstyle=\tiny,
- showspaces=false,
- showstringspaces=false,
- frame=single,
- stringstyle=\ttfamily,
- escapechar=\%,
- columns=space-flexible
-}
+% code listings
+\newminted{java}{fontsize=\scriptsize,frame=single,texcl}
+\newminted{xml}{fontsize=\scriptsize,frame=single,texcl}
+\newminted{text}{fontsize=\scriptsize,frame=single,texcl}
 
 \title{Spring Batch Workshop (advanced)}
 \author{Arnaud Cogoluègnes}

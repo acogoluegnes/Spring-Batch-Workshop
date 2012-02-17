@@ -74,8 +74,7 @@
 
 \begin{frame}[fragile]
 \frametitle{Partitioning logic with the \code{Partitioner} interface}
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public class ProductCategoryPartitioner implements Partitioner {
   (...)
 
@@ -95,7 +94,7 @@ public class ProductCategoryPartitioner implements Partitioner {
     return results;
   }
 }
-\end{lstlisting}
+\end{javacode}
 
 \end{frame}
 
@@ -106,22 +105,21 @@ public class ProductCategoryPartitioner implements Partitioner {
  \item Excerpt: 
 \end{itemize}
 
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 for(String category : categories) {
   ExecutionContext context = new ExecutionContext();
   context.put("category", category);
   results.put("partition."+category, context);
 }
-\end{lstlisting}
+\end{javacode}
 \begin{itemize}
  \item Results: 
 \end{itemize}
 
-\begin{lstlisting}
+\begin{textcode}
 partition.books = { category => 'books' }
 partition.dvds  = { category => 'dvds' }
-\end{lstlisting}
+\end{textcode}
 
 \end{frame}
 
@@ -131,8 +129,7 @@ partition.dvds  = { category => 'dvds' }
  \item They need to use the step scope 
 \end{itemize}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode*}{fontsize=\tiny}
 <bean id="reader" 
       class="org.springframework.batch.item.database.JdbcCursorItemReader" 
       scope="step">
@@ -140,7 +137,7 @@ partition.dvds  = { category => 'dvds' }
             value="select id,name,category from product where category = ?" />
   <property name="preparedStatementSetter">
     <bean class="org.springframework.jdbc.core.ArgPreparedStatementSetter">
-      <constructor-arg value="%\hili{\#\{stepExecutionContext['category']\}]}%" />
+      <constructor-arg value="#{stepExecutionContext['category']}" />
     </bean>
   </property>
 </bean>
@@ -149,11 +146,11 @@ partition.dvds  = { category => 'dvds' }
       class="org.springframework.batch.item.file.FlatFileItemWriter" 
       scope="step">
   <property name="resource"
-     value="%\hili{file:./target/products\_\#\{stepExecutionContext['category']\}.txt}%" />
+     value="file:./target/products_#{stepExecutionContext['category']}.txt}" />
  
   (...)
 </bean>
-\end{lstlisting}
+\end{xmlcode*}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -162,8 +159,7 @@ partition.dvds  = { category => 'dvds' }
  \item The default implementation is multi-threaded
 \end{itemize}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <batch:job id="databaseReadingPartitioningJob">
   <batch:step id="partitionedStep" >
     <batch:partition step="readWriteProductsPartitionedStep" 
@@ -175,10 +171,11 @@ partition.dvds  = { category => 'dvds' }
 
 <batch:step id="readWriteProductsPartitionedStep">
   <batch:tasklet>
-    <batch:chunk reader="reader" writer="writer" commit-interval="10" />
+    <batch:chunk reader="reader" writer="writer" 
+                 commit-interval="10" />
   </batch:tasklet>	
 </batch:step>
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}

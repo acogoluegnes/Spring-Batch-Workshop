@@ -17,8 +17,7 @@
 
 \begin{frame}[fragile]
  \frametitle{The launching code}
- \lstset{language=Java}
- \begin{lstlisting}
+ \begin{javacode}
 public class FileContactJobLauncher {
 
   public void launch(File file) throws Exception {
@@ -31,7 +30,7 @@ public class FileContactJobLauncher {
   }
 
 }  
- \end{lstlisting}
+ \end{javacode}
 
  \begin{itemize}
   \item The \code{File} is the local copy
@@ -41,8 +40,7 @@ public class FileContactJobLauncher {
 
 \begin{frame}[fragile]
  \frametitle{Listening to the FTP server}
- \lstset{language=XML}
- \begin{lstlisting}
+ \begin{xmlcode}
 <int:channel id="fileIn" />
 
 <int-ftp:inbound-channel-adapter local-directory="file:./input" 
@@ -52,29 +50,28 @@ public class FileContactJobLauncher {
 </int-ftp:inbound-channel-adapter>
 
 <bean id="ftpClientFactory"
-    class="org.springframework.integration.ftp.session.DefaultFtpSessionFactory">
+      class="o.s.i.ftp.session.DefaultFtpSessionFactory">
   <property name="host" value="localhost"/>
   <property name="port" value="2222"/>
   <property name="username" value="admin"/>
   <property name="password" value="admin"/>
 </bean>
- \end{lstlisting}
+ \end{xmlcode}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Calling the launcher on an inbound message}
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <int:channel id="fileIn" />
 
 <int:service-activator input-channel="fileIn">
   <bean 
-    class="com.zenika.workshop.springbatch.integration.FileContactJobLauncher">
+    class="c.z.w.springbatch.integration.FileContactJobLauncher">
     <property name="job" ref="fileDroppingLaunchingJob" />
     <property name="jobLauncher" ref="jobLauncher" />
   </bean>
 </int:service-activator>
- \end{lstlisting}
+ \end{xmlcode}
 \end{frame}
 
 \begin{frame}

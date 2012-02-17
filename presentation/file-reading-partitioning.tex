@@ -41,34 +41,32 @@
 
 \begin{frame}[fragile]
 \frametitle{Partitioner for input files}
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="partitioner"
       class="o.s.b.core.partition.support.MultiResourcePartitioner">
   <property name="resources" 
             value="file:./src/main/resources/input/*.txt" />
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{The partitioner sets a context for the components}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="reader" 
       class="org.springframework.batch.item.file.FlatFileItemReader" 
       scope="step">
   (...)
-  <property name="resource" value="%\hili{\#\{stepExecutionContext['fileName']\}}%" />
+  <property name="resource" 
+            value="#{stepExecutionContext['fileName']}" />
 </bean>
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}[fragile]
  \frametitle{Using the multi-threaded partition handler}
- \lstset{language=XML}
- \begin{lstlisting}
+ \begin{xmlcode}
 <batch:job id="fileReadingPartitioningJob">
   <batch:step id="partitionedStep" >
     <batch:partition step="readWriteContactsPartitionedStep"
@@ -80,10 +78,11 @@
 
 <batch:step id="readWriteContactsPartitionedStep">
   <batch:tasklet>    
-    <batch:chunk reader="reader" writer="writer" commit-interval="10" />
+    <batch:chunk reader="reader" writer="writer" 
+                 commit-interval="10" />
   </batch:tasklet>	
 </batch:step>
- \end{lstlisting}
+ \end{xmlcode}
 \end{frame}
 
 \begin{frame}

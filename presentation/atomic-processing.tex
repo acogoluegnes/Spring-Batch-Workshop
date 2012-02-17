@@ -38,10 +38,9 @@
   \item Set the commit interval to a very large value  
   \item You should never have more items!
  \end{itemize}
- \lstset{language=XML}
-\begin{lstlisting}
-<batch:chunk reader="reader" writer="writer" commit-interval="1000000"/>
-\end{lstlisting}
+\begin{xmlcode}
+<chunk reader="reader" writer="writer" commit-interval="1000000"/>
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -49,8 +48,7 @@
  \begin{itemize}
   \item Spring Batch uses a \code{CompletionPolicy} to know if a chunk is complete
  \end{itemize}
- \lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 package org.springframework.batch.repeat;
 
 public interface CompletionPolicy {
@@ -64,22 +62,21 @@ public interface CompletionPolicy {
   void update(RepeatContext context);
 
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
  \frametitle{Plugging in the \code{CompletionPolicy}}
- \lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <batch:job id="atomicProcessingJob">
   <batch:step id="atomicProcessingStep">
     <batch:tasklet>
       <batch:chunk reader="reader" writer="writer" 
-                   %\hili{chunk-completion-policy="atomicCompletionPolicy"}% />
+                   chunk-completion-policy="atomicCompletionPolicy" />
     </batch:tasklet>
   </batch:step>
 </batch:job>
-\end{lstlisting}
+\end{xmlcode}
 \begin{itemize}
   \item NB: remove the \code{commit-interval} attribute when using a \code{CompletionStrategy}
  \end{itemize}
@@ -87,11 +84,10 @@ public interface CompletionPolicy {
 
 \begin{frame}[fragile]
  \frametitle{Which \code{CompletionPolicy} for my atomic processing?}
- \lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="atomicCompletionPolicy"
       class="o.s.b.repeat.policy.DefaultResultCompletionPolicy" />
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}

@@ -18,19 +18,17 @@
 
 
 \begin{frame}[fragile]
-\frametitle{The input file and the domain object}
-\begin{lstlisting}
+\begin{textcode}
 1,De-Anna,Raghunath,2010-03-04
 2,Susy,Hauerstock,2010-03-04
 3,Kiam,Whitehurst,2010-03-04
 4,Alecia,Van Holst,2010-03-04
 5,Hing,Senecal,2010-03-04
-\end{lstlisting}
+\end{textcode}
 \begin{itemize}
- \item NB: no SSN!
+ \item NB: no SSN in the CSV file!
 \end{itemize}
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode}
 public class Contact {
 
   private Long id;	
@@ -39,7 +37,7 @@ public class Contact {
   private String ssn;
   (...)
 }
-\end{lstlisting}
+\end{javacode}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -53,20 +51,18 @@ public class Contact {
  \end{itemize} 
 \end{itemize}
 
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <contact>
   <firstname>John</firstname>
   <lastname>Doe</lastname>
   <ssn>987-65-4329</ssn>
 </contact>
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{The \code{ItemProcessor} implementation}
-\lstset{language=Java}
-\begin{lstlisting}
+\begin{javacode*}{fontsize=\tiny}
 package com.zenika.workshop.springbatch;
 
 import javax.xml.transform.dom.DOMSource;
@@ -94,13 +90,12 @@ public class SsnWebServiceItemProcessor implements
   }
   (...)
 }
-\end{lstlisting}
+\end{javacode*}
 \end{frame}
 
 \begin{frame}[fragile]
 \frametitle{Configuring the \code{SsnWebServiceItemProcessor}}
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode*}{fontsize=\tiny}
 <batch:job id="itemEnrichmentJob">
   <batch:step id="itemEnrichmentStep">
     <batch:tasklet>
@@ -115,7 +110,7 @@ public class SsnWebServiceItemProcessor implements
   <property name="url" 
   value="http://localhost:8085/?firstname={firstname}&amp;lastname={lastname}" />
 </bean>
-\end{lstlisting}
+\end{xmlcode*}
 \end{frame}
 
 \begin{frame}
@@ -136,21 +131,20 @@ public class SsnWebServiceItemProcessor implements
 \begin{itemize}
   \item This is only about wrapping  
  \end{itemize}
-\lstset{language=XML}
-\begin{lstlisting}
+\begin{xmlcode}
 <bean id="processor"
-      class="org.springframework.batch.integration.async.AsyncItemProcessor">
+      class="o.s.b.integration.async.AsyncItemProcessor">
   <property name="delegate" ref="processor" />
   <property name="taskExecutor" ref="taskExecutor" />
 </bean>
 
 <bean id="writer"
-      class="org.springframework.batch.integration.async.AsyncItemWriter">
+      class="o.s.b.integration.async.AsyncItemWriter">
   <property name="delegate" ref="writer" />							
 </bean>
 
 <task:executor id="taskExecutor" pool-size="5" />
-\end{lstlisting}
+\end{xmlcode}
 \end{frame}
 
 \begin{frame}
