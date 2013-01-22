@@ -50,5 +50,5 @@ To check that everything is fine, go to the root of the project and launch the t
 Each Spring Batch topic is covered by two projects: the -start project is
 the one you should start from. The -solution is the solution. You just need
 to follow the TODOs. The concepts are (quickly) covered in the PDF file
-at the root of this project. The PDF contains additional instructions and hints to
+in the presentation directory. The PDF contains additional instructions and hints to
 work on the projects.
