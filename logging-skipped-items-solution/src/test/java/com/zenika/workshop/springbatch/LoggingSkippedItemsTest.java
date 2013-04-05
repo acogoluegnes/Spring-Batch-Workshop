@@ -42,7 +42,7 @@ public class LoggingSkippedItemsTest {
 	@Test public void loggingSkippedItems() throws Exception {
 		JobExecution execution = jobLauncher.run(skipJob, new JobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(6,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(6,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 	}
 	
 }

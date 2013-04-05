@@ -46,7 +46,7 @@ public class ItemProcessorJobTest {
 		// TODO 08 launch the test!
 		JobExecution execution = jobLauncher.run(job, new JobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(5,jdbcTemplate.queryForInt("select count(1) from registration_confirmation"));
+		assertEquals(5,jdbcTemplate.queryForObject("select count(1) from registration_confirmation",Integer.class).intValue());
 	}
 	
 }

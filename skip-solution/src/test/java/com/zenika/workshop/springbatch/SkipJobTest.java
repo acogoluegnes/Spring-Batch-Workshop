@@ -50,7 +50,7 @@ public class SkipJobTest {
 	@Test public void withSkip() throws Exception {
 		JobExecution execution = jobLauncher.run(skipJob, new JobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(7,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(7,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 	}
 	
 }

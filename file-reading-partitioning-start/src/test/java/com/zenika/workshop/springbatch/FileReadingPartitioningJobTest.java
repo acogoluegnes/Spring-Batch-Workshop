@@ -65,7 +65,7 @@ public class FileReadingPartitioningJobTest {
 				new JobParametersBuilder().addLong("time", start).toJobParameters()
 		);
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(4*100,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(4*100,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 		System.out.println("not partitioned: "+(System.currentTimeMillis()-start)+" ms");
 	}
 	

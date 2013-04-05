@@ -28,7 +28,7 @@ public class JdbcContactItemWriter implements ItemWriter<Contact> {
 	@Override
 	public void write(List<? extends Contact> items) throws Exception {
 		for(Contact item : items) {
-			Long id = jdbcTemplate.queryForLong("select contact_seq.nextval from dual");
+			Long id = jdbcTemplate.queryForObject("select contact_seq.nextval from dual",Long.class).longValue();
 			jdbcTemplate.update(
 				"insert into contact (id,firstname,lastname,birth) values (?,?,?,?)",
 				id,item.getFirstname(),item.getLastname(),item.getBirth()

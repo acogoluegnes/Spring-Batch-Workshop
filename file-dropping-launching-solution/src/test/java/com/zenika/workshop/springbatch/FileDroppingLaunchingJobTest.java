@@ -67,7 +67,7 @@ public class FileDroppingLaunchingJobTest {
 	@Test public void fileDroppingLaunching() throws Exception {
 		assertEquals(0, jobExplorer.getJobInstances(job.getName(), 0, Integer.MAX_VALUE).size());
 		copyFileToFtpHome();
-		await().untilCall(to(jdbcTemplate).queryForInt("select count(1) from contact"),equalTo(5));
+		await().untilCall(to(jdbcTemplate).queryForObject("select count(1) from contact",Integer.class),equalTo(5));
 		assertEquals(1, jobExplorer.getJobInstances(job.getName(), 0, Integer.MAX_VALUE).size());
 	}
 

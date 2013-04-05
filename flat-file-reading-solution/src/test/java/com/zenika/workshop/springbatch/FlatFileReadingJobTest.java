@@ -42,7 +42,7 @@ public class FlatFileReadingJobTest {
 	@Test public void flatFileReading() throws Exception {
 		JobExecution execution = jobLauncher.run(job, new JobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(5,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(5,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 	}
 	
 }

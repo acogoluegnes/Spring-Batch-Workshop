@@ -60,7 +60,7 @@ public class JdbcPagingJobTest {
 		File file = new File(outputFile);
 		assertTrue(file.exists());
 		assertEquals(
-			jdbcTemplate.queryForInt("select count(1) from contact"), 
+			jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue(), 
 			FileUtils.readLines(file).size()
 		);
 		// TODO 04 launch the test!

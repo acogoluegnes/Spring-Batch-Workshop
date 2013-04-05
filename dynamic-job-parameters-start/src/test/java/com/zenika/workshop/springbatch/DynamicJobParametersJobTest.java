@@ -50,14 +50,14 @@ public class DynamicJobParametersJobTest {
 			.toJobParameters();
 		JobExecution execution = jobLauncher.run(job, jobParameters);
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(7,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(7,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 		
 		jobParameters = new JobParametersBuilder()
 			.addString("input.file", "file:./input/contacts-02.txt")
 			.toJobParameters();
 		execution = jobLauncher.run(job, jobParameters);
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(13,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(13,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 		// TODO 04 launch the test!
 	}
 	

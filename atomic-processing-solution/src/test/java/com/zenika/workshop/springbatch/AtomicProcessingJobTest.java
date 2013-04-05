@@ -47,7 +47,7 @@ public class AtomicProcessingJobTest {
 				new JobParametersBuilder().addString("inputFile","classpath:/contacts-ok.txt")
 					.toJobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(25,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(25,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 	}
 	
 	@Test public void chunkOrientedProcessingFileNOk() throws Exception {
@@ -55,7 +55,7 @@ public class AtomicProcessingJobTest {
 				new JobParametersBuilder().addString("inputFile","classpath:/contacts-nok.txt")
 				.toJobParameters());
 		assertEquals(ExitStatus.FAILED, execution.getExitStatus());
-		assertEquals(20,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(20,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 	}
 	
 	@Test public void atomicProcessingFileOk() throws Exception {
@@ -63,7 +63,7 @@ public class AtomicProcessingJobTest {
 				new JobParametersBuilder().addString("inputFile","classpath:/contacts-ok.txt")
 					.toJobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(25,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(25,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 	}
 	
 	@Test public void atomicProcessingFileNOk() throws Exception {
@@ -71,7 +71,7 @@ public class AtomicProcessingJobTest {
 				new JobParametersBuilder().addString("inputFile","classpath:/contacts-nok.txt")
 				.toJobParameters());
 		assertEquals(ExitStatus.FAILED, execution.getExitStatus());
-		assertEquals(0,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(0,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 	}
 	
 }

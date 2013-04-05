@@ -46,8 +46,8 @@ public class ComplexFlowJobTest {
 				.toJobParameters()
 		);
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(5,jdbcTemplate.queryForInt("select count(1) from contact"));
-		assertEquals(0,jdbcTemplate.queryForInt("select count(1) from tracking"));
+		assertEquals(5,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
+		assertEquals(0,jdbcTemplate.queryForObject("select count(1) from tracking",Integer.class).intValue());
 	}
 	
 	@Test public void incorrectFile() throws Exception {
@@ -56,8 +56,8 @@ public class ComplexFlowJobTest {
 				.toJobParameters()
 		);
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(0,jdbcTemplate.queryForInt("select count(1) from contact"));
-		assertEquals(1,jdbcTemplate.queryForInt("select count(1) from tracking where reason = ?","INCORRECT"));
+		assertEquals(0,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
+		assertEquals(1,jdbcTemplate.queryForObject("select count(1) from tracking where reason = ?",Integer.class,"INCORRECT").intValue());
 	}
 	
 	@Test public void fileWithSkipped() throws Exception {
@@ -66,8 +66,8 @@ public class ComplexFlowJobTest {
 				.toJobParameters()
 		);
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(5-1,jdbcTemplate.queryForInt("select count(1) from contact"));
-		assertEquals(1,jdbcTemplate.queryForInt("select count(1) from tracking where reason = ?","SKIPS"));
+		assertEquals(5-1,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
+		assertEquals(1,jdbcTemplate.queryForObject("select count(1) from tracking where reason = ?",Long.class,"SKIPS").intValue());
 	}
 	
 }

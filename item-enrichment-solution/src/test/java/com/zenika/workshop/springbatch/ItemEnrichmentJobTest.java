@@ -75,7 +75,7 @@ public class ItemEnrichmentJobTest {
 			new JobParametersBuilder().addLong("time", System.currentTimeMillis()).toJobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
 		System.out.println("sync job executed in "+(System.currentTimeMillis()-start)+" ms");		
-		assertEquals(5,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(5,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 		List<Map<String,Object>> contacts = jdbcTemplate.queryForList("select * from contact");
 		for(Map<String,Object> item : contacts) {
 			Assert.assertTrue(item.get("ssn").toString().length() == 9 + 2);
@@ -89,7 +89,7 @@ public class ItemEnrichmentJobTest {
 			new JobParametersBuilder().addLong("time", System.currentTimeMillis()).toJobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
 		System.out.println("async job executed in "+(System.currentTimeMillis()-start)+" ms");
-		assertEquals(5,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(5,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 		List<Map<String,Object>> contacts = jdbcTemplate.queryForList("select * from contact");
 		for(Map<String,Object> item : contacts) {
 			Assert.assertTrue(item.get("ssn").toString().length() == 9 + 2);

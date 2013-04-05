@@ -45,7 +45,7 @@ public class LoggingSkippedItemsTest {
 		// TODO 06 launch the test and check the console outputs the warnings
 		JobExecution execution = jobLauncher.run(skipJob, new JobParameters());
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
-		assertEquals(6,jdbcTemplate.queryForInt("select count(1) from contact"));
+		assertEquals(6,jdbcTemplate.queryForObject("select count(1) from contact",Integer.class).intValue());
 	}
 	
 }
