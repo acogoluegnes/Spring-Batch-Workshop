@@ -10,11 +10,6 @@
 	</parent>
 	<artifactId>item-enrichment-solution</artifactId>
 
-	<properties>
-		<jetty.version>6.1.26</jetty.version>
-		<spring.batch.integration.version>1.2.0.RELEASE</spring.batch.integration.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -25,6 +20,16 @@
 			<groupId>org.springframework.batch</groupId>
 			<artifactId>spring-batch-integration</artifactId>
 			<version>${spring.batch.integration.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-aop</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>org.slf4j</groupId>
+					<artifactId>slf4j-log4j12</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.mortbay.jetty</groupId>
