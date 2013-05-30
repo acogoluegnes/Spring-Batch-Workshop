@@ -37,7 +37,7 @@
 		</property>
 		<property name="sql" value="select id,name,category from product where category = ?" />
 		<property name="preparedStatementSetter">
-			<bean class="org.springframework.jdbc.core.ArgPreparedStatementSetter">
+			<bean class="org.springframework.jdbc.core.ArgumentPreparedStatementSetter">
 				<constructor-arg value="#{stepExecutionContext['category']}" />
 			</bean>
 		</property>

@@ -24,6 +24,8 @@ public class Contact {
 		this.birth = birth;
 	}
 	
+	public Contact() {	}
+	
 	public Long getId() {
 		return id;
 	}
