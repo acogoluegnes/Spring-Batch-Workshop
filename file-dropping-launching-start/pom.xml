@@ -10,10 +10,6 @@
 	</parent>
 	<artifactId>file-dropping-launching-start</artifactId>
 
-	<properties>
-		<spring.integration.version>2.0.3.RELEASE</spring.integration.version>
-	</properties>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.integration</groupId>

@@ -9,6 +9,8 @@ import org.mortbay.jetty.Server;
 import org.mortbay.jetty.nio.SelectChannelConnector;
 import org.mortbay.jetty.webapp.WebAppContext;
 
+import java.io.File;
+
 
 /**
  * @author acogoluegnes
