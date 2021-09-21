@@ -11,7 +11,7 @@
 		<spring.batch.admin.version>1.3.1.RELEASE</spring.batch.admin.version>
 		<jetty.version>6.1.26</jetty.version>
 		<slf4j.version>1.7.3</slf4j.version>
-		<logback.version>1.0.10</logback.version>
+		<logback.version>1.2.0</logback.version>
 		<h2.version>1.3.170</h2.version>
 		<junit.version>4.11</junit.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
